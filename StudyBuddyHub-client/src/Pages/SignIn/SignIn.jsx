@@ -1,6 +1,45 @@
+import { useContext, useState } from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Providers/AuthProvider";
+
+
 const SignIn = () => {
+    const [signInError, setSignInError] = useState('');
+    const [success, setSuccess] = useState('');
+
+    const { signIn, googleSignIn } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const handleSignIn = e => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+
+        signIn(email, password)
+            .then(result => {
+                navigate(location?.state ? location.state : '/');
+                setSuccess("User logged in successfully.");
+            })
+            .catch(error => {
+                console.error(error);
+                setSignInError(error.message);
+
+            })
+
+    }
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(result => {
+                console.log(result.user);
+                navigate("/");
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
     return (
         <div className="w-full max-w-7xl mx-auto">
             <div className="hero min-h-screen bg-base-200">
@@ -11,26 +50,32 @@ const SignIn = () => {
                     </div>
                     <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                         <h1 className="text-5xl text-center pt-4 font-bold">Sign In Now!</h1>
-                        <form className="card-body">
+                        <form onSubmit={handleSignIn} className="card-body">
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>
                                 </label>
-                                <input type="email" placeholder="email" className="input input-bordered" required />
+                                <input type="email" name="email" placeholder="email" className="input input-bordered" required />
                             </div>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Password</span>
                                 </label>
-                                <input type="password" placeholder="password" className="input input-bordered" required />
+                                <input type="password" name="password" placeholder="password" className="input input-bordered" required />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <button className="btn btn-outline btn-primary">Sign In</button>
+                                <button type="submit" className="btn btn-outline btn-primary">Sign In</button>
                             </div>
                         </form>
+                        {
+                            signInError && <p className="text-sm text-center text-red-600 p-4">{signInError}</p>
+                        }
+                        {
+                            success && <p className="text-sm text-center text-green-600">{success}</p>
+                        }
                         <p className="text-center text-sm">
                             Do not have an account ?{' '}
                             <NavLink
@@ -42,7 +87,7 @@ const SignIn = () => {
                         </p>
                         <div className="divider ">Or, Continue With</div>
                         <div className="flex justify-center pb-4">
-                            <button
+                            <button onClick={handleGoogleSignIn}
                                 type="button"
                                 className="btn btn-outline btn-circle btn-primary cursor-pointer "
                             >
