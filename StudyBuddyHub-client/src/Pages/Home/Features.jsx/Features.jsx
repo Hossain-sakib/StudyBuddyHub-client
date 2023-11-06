@@ -2,11 +2,10 @@ import Marquee from "react-fast-marquee";
 
 const Features = () => {
     return (
-        <div>
-            <h1 className="text-center text-4xl font-bold">Our Features</h1>
-            <Marquee className=" py-16">
-                <div className="container mx-auto flex flex-wrap items-center justify-between">
-
+        <div className="bg-base-200">
+            <h1 className="pt-10 text-center text-4xl font-bold">Our Features</h1>
+            <Marquee className="p-8">
+                <div className="container mx-auto flex flex-wrap items-center justify-between mb-12">
                     <div className="w-full sm:w-1/2 lg:w-1/3 p-4">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <div className="text-3xl text-primary mb-4">📚 Assignment Creation</div>
