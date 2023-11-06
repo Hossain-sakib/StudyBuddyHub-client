@@ -73,7 +73,7 @@ const Navbar = () => {
                     <div className="dropdown dropdown-end ">
                         <label tabIndex={0} className="cursor-pointer">
                             <div className="avatar">
-                                <div className="w-10 rounded-full">
+                                <div className="w-10 rounded-full overflow-hidden transition-all hover:scale-105  hover:shadow-2xl ">
                                     <img src={user?.photoURL} alt={user.displayName} />
                                 </div>
                             </div>
@@ -88,13 +88,6 @@ const Navbar = () => {
                             >
                                 Profile
                             </NavLink>
-                            <NavLink
-                                to="/user/orders"
-                                className="px-4 py-2 hover:bg-base-300 rounded-lg"
-                            >
-                                Orders
-                            </NavLink>
-
                             <div
                                 onClick={signout}
                                 className="cursor-pointer text-red-500 px-4 py-2 hover:bg-base-300 rounded-lg"

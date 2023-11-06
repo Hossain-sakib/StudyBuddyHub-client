@@ -8,7 +8,7 @@ const Sidebar = () => {
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
-                        isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                        isActive ? 'btn btn-primary ' : 'btn btn-ghost'
                     }
                 >
                     Home
@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <NavLink
                     to="/about"
                     className={({ isActive }) =>
-                        isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                        isActive ? 'btn btn-primary ' : 'btn btn-ghost'
                     }
                 >
                     About
@@ -24,7 +24,7 @@ const Sidebar = () => {
                 <NavLink
                     to="/contact"
                     className={({ isActive }) =>
-                        isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                        isActive ? 'btn btn-primary ' : 'btn btn-ghost'
                     }
                 >
                     Contact
