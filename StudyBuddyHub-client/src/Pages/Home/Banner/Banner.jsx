@@ -2,9 +2,9 @@
 import { AiOutlinePlus } from "react-icons/ai";
 const Banner = () => {
     return (
-        <div>
+        <div className="py-6 space-y-8">
             <div className="flex flex-col-reverse md:flex-row items-center justify-between">
-                <div className="flex-1 p-6 space-y-6">
+                <div className="flex-1 p-6 space-y-8">
                     <h1 className="text-4xl font-bold">Empower Your Learning Journey</h1>
                     <p className="text-sm">
                         Welcome to Study Buddy Hub - Your Gateway to Collaborative Learning,
@@ -20,7 +20,7 @@ const Banner = () => {
                 </div>
             </div>
             <div className="flex flex-col-reverse md:flex-row-reverse items-center justify-between">
-                <div className="flex-1 p-6 space-y-6">
+                <div className="flex-1 p-6 space-y-8">
                     <h1 className="text-4xl font-bold">Unleash the Power of Group Study</h1>
                     <p className="text-sm">
                         Study Buddy Hub: Where Learning Meets Teamwork! Connect with your
