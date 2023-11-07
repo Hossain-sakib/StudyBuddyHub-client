@@ -3,6 +3,23 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { useContext } from "react";
 
 const Navbar = () => {
+
+
+    // const dark = () => {
+    //     return document.querySelector("html").attributes['data-theme'].value = "dark"
+    // }
+    // const light = () => {
+    //     return document.querySelector("html").attributes['data-theme'].value = "light"
+    // }
+
+    // const toggleTheme = e => {
+    //     if (e.target.checked) {
+    //         return dark();
+    //     }
+    //     return light();
+    // }
+
+
     const { signout, user } = useContext(AuthContext);
     return (
         <div className="w-full navbar bg-base-200">
@@ -88,6 +105,9 @@ const Navbar = () => {
                             >
                                 Profile
                             </NavLink>
+                            {/* <div className="flex px-4 py-2 ">
+                                <input type="checkbox" className="toggle toggle-md border-2 " onChange={toggleTheme} />
+                            </div> */}
                             <div
                                 onClick={signout}
                                 className="cursor-pointer text-red-500 px-4 py-2 hover:bg-base-300 rounded-lg"

@@ -6,7 +6,7 @@ const Features = () => {
             <h1 className="pt-10 text-center text-4xl font-bold">Our Features</h1>
             <Marquee className="p-8">
                 <div className="container mx-auto flex flex-wrap items-center justify-between mb-12">
-                    <div className="w-full sm:w-1/2 lg:w-1/3 p-4">
+                    <div className="w-1/3  p-4">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <div className="text-3xl text-primary mb-4">📚 Assignment Creation</div>
                             <p className="text-gray-600">
@@ -17,7 +17,7 @@ const Features = () => {
                     </div>
 
 
-                    <div className="w-full sm:w-1/2 lg:w-1/3 p-4">
+                    <div className="w-1/3  p-4">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <div className="text-3xl text-primary mb-4">🤝 Collaborative Learning</div>
                             <p className="text-gray-600">
@@ -26,7 +26,7 @@ const Features = () => {
                         </div>
                     </div>
 
-                    <div className="w-full sm:w-1/2 lg:w-1/3 p-4">
+                    <div className="w-1/3 p-4">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <div className="text-3xl text-primary mb-4">📝 Assignment Grading</div>
                             <p className="text-gray-600">

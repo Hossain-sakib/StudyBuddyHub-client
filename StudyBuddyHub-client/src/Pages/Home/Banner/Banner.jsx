@@ -1,5 +1,6 @@
 
 import { AiOutlinePlus } from "react-icons/ai";
+import { Link } from "react-router-dom";
 const Banner = () => {
     return (
         <div className="py-6 space-y-8 bg-base-200 mt-6">
@@ -12,7 +13,7 @@ const Banner = () => {
                         friends. Join us and take your learning to the next level!
                     </p>
                     <div className="flex justify-start">
-                        <button className="btn btn-primary rounded-full "><AiOutlinePlus></AiOutlinePlus>Create Assignment</button>
+                        <Link to='/createassignment'> <button className="btn btn-primary rounded-full "><AiOutlinePlus></AiOutlinePlus>Create Assignment</button></Link>
                     </div>
                 </div>
                 <div className="flex-1 p-6">
