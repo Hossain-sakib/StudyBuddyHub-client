@@ -67,7 +67,7 @@ const SignIn = () => {
                                 </label>
                             </div>
                             <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-outline btn-primary">Sign In</button>
+                                <button type="submit" className="btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Sign In</button>
                             </div>
                         </form>
                         {

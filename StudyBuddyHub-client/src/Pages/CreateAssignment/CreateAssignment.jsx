@@ -50,8 +50,7 @@ const CreateAssignment = () => {
 
 
     return (
-        <div>
-
+        <div className='my-4'>
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content flex flex-col">
                     <div>
@@ -102,6 +101,7 @@ const CreateAssignment = () => {
                                         onChange={handleDifficultyChange}
                                         options={difficultyOptions}
                                         isSearchable={false}
+                                        required
                                     />
                                 </div>
                                 <div className="form-control flex-1">
@@ -113,11 +113,12 @@ const CreateAssignment = () => {
                                         onChange={handleDateChange}
                                         minDate={new Date()}
                                         className="input input-bordered "
+                                        required
                                     />
                                 </div>
                             </div>
                             <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-outline btn-primary">Create Assignment</button>
+                                <button type="submit" className="btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Create Assignment</button>
                             </div>
                         </form>
                     </div>

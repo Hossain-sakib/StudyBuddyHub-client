@@ -30,7 +30,7 @@ const Faq = () => {
                 <h2 className="flex justify-center text-center text-4xl font-bold mb-8 gap-6">Frequently Asked Questions</h2>
                 <div className="grid gap-4">
                     {faqData.map((item, index) => (
-                        <div key={index} className="shadow-lg">
+                        <div key={index} className="shadow-lg overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">
                             <div className="collapse bg-base-200">
                                 <input type="checkbox" className="peer" />
                                 <div className="collapse-title text-xl font-medium">

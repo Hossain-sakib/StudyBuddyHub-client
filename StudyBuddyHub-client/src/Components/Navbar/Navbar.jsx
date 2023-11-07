@@ -23,7 +23,7 @@ const Navbar = () => {
     const { signout, user } = useContext(AuthContext);
     return (
         <div className="w-full navbar bg-base-200">
-            <div className="flex-none lg:hidden">
+            <div className="flex-none lg:hidden overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">
                 <label
                     htmlFor="my-drawer-3"
                     aria-label="open sidebar"
@@ -33,7 +33,7 @@ const Navbar = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        className="inline-block w-6 h-6 stroke-current"
+                        className="inline-block w-6 h-6 stroke-current "
                     >
                         <path
                             strokeLinecap="round"
@@ -54,7 +54,7 @@ const Navbar = () => {
                     <NavLink
                         to="/"
                         className={({ isActive }) =>
-                            isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
                         Home
@@ -62,7 +62,7 @@ const Navbar = () => {
                     <NavLink
                         to="/about"
                         className={({ isActive }) =>
-                            isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
                         About
@@ -70,7 +70,7 @@ const Navbar = () => {
                     <NavLink
                         to="/contact"
                         className={({ isActive }) =>
-                            isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
                         Contact
@@ -78,7 +78,7 @@ const Navbar = () => {
                     <NavLink
                         to="/services"
                         className={({ isActive }) =>
-                            isActive ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm'
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
                         Services

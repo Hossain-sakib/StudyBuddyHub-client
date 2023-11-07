@@ -92,7 +92,7 @@ const SignUp = () => {
                                 <input type="password" name="password" placeholder="password" className="input input-bordered" required />
                             </div>
                             <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-outline btn-primary">Sign Up</button>
+                                <button type="submit" className="btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Sign Up</button>
                             </div>
                         </form>
                         {
