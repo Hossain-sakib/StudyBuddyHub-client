@@ -76,12 +76,12 @@ const Navbar = () => {
                         Contact
                     </NavLink>
                     <NavLink
-                        to="/services"
+                        to="/allassignments"
                         className={({ isActive }) =>
                             isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
-                        Services
+                        Assignments
                     </NavLink>
                 </div>
             </div>

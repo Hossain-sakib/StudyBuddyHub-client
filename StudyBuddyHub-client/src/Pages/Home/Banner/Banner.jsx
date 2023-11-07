@@ -13,7 +13,9 @@ const Banner = () => {
                         friends. Join us and take your learning to the next level!
                     </p>
                     <div className="flex justify-start">
-                        <Link to='/createassignment'> <button className="btn btn-primary rounded-full overflow-hidden transition-all hover:scale-105  hover:shadow-2xl "><AiOutlinePlus></AiOutlinePlus>Create Assignment</button></Link>
+                        <Link to='/createassignment'>
+                            <button className="btn btn-primary rounded-full overflow-hidden transition-all hover:scale-105  hover:shadow-2xl "><AiOutlinePlus></AiOutlinePlus>Create Assignment</button>
+                        </Link>
                     </div>
                 </div>
                 <div className="flex-1 p-6">
@@ -29,7 +31,9 @@ const Banner = () => {
                         us, and let's ace those exams!
                     </p>
                     <div className=" flex justify-end">
-                        <button className="btn btn-primary flex justify-end rounded-full overflow-hidden transition-all hover:scale-105  hover:shadow-2xl"><AiOutlinePlus></AiOutlinePlus>Take An Assignment</button>
+                        <Link to='/allassignments'>
+                            <button className="btn btn-primary flex justify-end rounded-full overflow-hidden transition-all hover:scale-105  hover:shadow-2xl"><AiOutlinePlus></AiOutlinePlus>Take An Assignment</button>
+                        </Link>
                     </div>
                 </div>
                 <div className="flex-1 p-6">

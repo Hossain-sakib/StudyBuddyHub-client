@@ -3,6 +3,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { MdAssignmentAdd } from "react-icons/md";
+import Swal from 'sweetalert2';
 
 
 const difficultyOptions = [
@@ -36,8 +37,33 @@ const CreateAssignment = () => {
         const description = form.description.value;
         const difficultyLevel = selectedDifficulty ? selectedDifficulty.value : null;
         const dueDate = selectedDate;
-        const data = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
-        console.log(data);
+        const newAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
+        console.log(newAssignment);
+
+
+
+        fetch('http://localhost:5000/assignments',{
+            method: 'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body: JSON.stringify(newAssignment)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if(data.insertedId){
+                    Swal.fire({
+                        title:'Success',
+                        text:'Assignment Created Successfully!',
+                        icon:'success',
+                        confirmButtonText:'Ok'
+                      })
+                }
+            })
+
+
+        
 
     }
 
