@@ -38,7 +38,7 @@ const CreateAssignment = () => {
         const difficultyLevel = selectedDifficulty ? selectedDifficulty.value : null;
         const dueDate = selectedDate;
         const newAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
-        console.log(newAssignment);
+        
 
 
 

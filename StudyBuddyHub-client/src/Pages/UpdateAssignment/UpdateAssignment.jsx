@@ -4,6 +4,7 @@ import { MdAssignmentAdd } from "react-icons/md";
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Swal from "sweetalert2";
 
 const UpdateAssignment = () => {
 
@@ -31,6 +32,37 @@ const UpdateAssignment = () => {
 
     const handleUpdateAssignment = e => {
         e.preventDefault();
+
+        const form = e.target;
+        const title = form.title.value;
+        const thumbnailURL = form.url.value;
+        const marks = form.marks.value;
+        const description = form.description.value;
+        const difficultyLevel = selectedDifficulty ? selectedDifficulty.value : null;
+        const dueDate = selectedDate;
+        const updatedAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
+
+
+
+        fetch(`http://localhost:5000/assignments/${_id}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(updatedAssignment)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Assignment Updated Successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
+                }
+            })
 
 
 

@@ -14,6 +14,22 @@ const Sidebar = () => {
                     Home
                 </NavLink>
                 <NavLink
+                    to="/allassignments"
+                    className={({ isActive }) =>
+                        isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-outline btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
+                    }
+                >
+                    All Assignments
+                </NavLink>
+                <NavLink
+                    to="/myassignments"
+                    className={({ isActive }) =>
+                        isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-outline btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
+                    }
+                >
+                    My Assignments
+                </NavLink>
+                <NavLink
                     to="/about"
                     className={({ isActive }) =>
                         isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-outline btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'

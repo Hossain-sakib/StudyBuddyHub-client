@@ -49,7 +49,7 @@ const Navbar = () => {
                 <Link to='/'>
                     <img className="w-16 h-16 overflow-hidden transition-all hover:scale-105  hover:shadow-2xl" src="https://i.ibb.co/WBjtN1N/study-buddy.png" alt="" /></Link></div>
             <div className="flex-none hidden lg:block">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4 mr-4">
                     {/* Navbar menu content here */}
                     <NavLink
                         to="/"
@@ -58,6 +58,22 @@ const Navbar = () => {
                         }
                     >
                         Home
+                    </NavLink>
+                    <NavLink
+                        to="/allassignments"
+                        className={({ isActive }) =>
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
+                        }
+                    >
+                       All Assignments
+                    </NavLink>
+                    <NavLink
+                        to="/myassignments"
+                        className={({ isActive }) =>
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
+                        }
+                    >
+                        My Assignments
                     </NavLink>
                     <NavLink
                         to="/about"
@@ -74,14 +90,6 @@ const Navbar = () => {
                         }
                     >
                         Contact
-                    </NavLink>
-                    <NavLink
-                        to="/allassignments"
-                        className={({ isActive }) =>
-                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
-                        }
-                    >
-                        Assignments
                     </NavLink>
                 </div>
             </div>
@@ -103,11 +111,8 @@ const Navbar = () => {
                                 to="/user"
                                 className="px-4 py-2 hover:bg-base-300 rounded-lg"
                             >
-                                Profile
+                                {user?.displayName}
                             </NavLink>
-                            {/* <div className="flex px-4 py-2 ">
-                                <input type="checkbox" className="toggle toggle-md border-2 " onChange={toggleTheme} />
-                            </div> */}
                             <div
                                 onClick={signout}
                                 className="cursor-pointer text-red-500 px-4 py-2 hover:bg-base-300 rounded-lg"
@@ -126,6 +131,9 @@ const Navbar = () => {
                         Login
                     </NavLink>
                 )}
+                {/* <div className="flex px-4 py-2 ">
+                                <input type="checkbox" className="toggle toggle-md border-2 " onChange={toggleTheme} />
+                            </div> */}
             </div>
         </div>
     );
