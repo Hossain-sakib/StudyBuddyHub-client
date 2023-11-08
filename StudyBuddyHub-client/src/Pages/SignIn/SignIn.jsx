@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import axios from "axios";
 
 
 const SignIn = () => {
@@ -9,6 +10,8 @@ const SignIn = () => {
     const [success, setSuccess] = useState('');
 
     const { signIn, googleSignIn } = useContext(AuthContext);
+
+    
     const location = useLocation();
     const navigate = useNavigate();
     const handleSignIn = e => {
@@ -20,8 +23,19 @@ const SignIn = () => {
 
         signIn(email, password)
             .then(result => {
-                navigate(location?.state ? location.state : '/');
                 setSuccess("User logged in successfully.");
+                const signedInUser = result.user;
+                console.log(signedInUser);
+                const user = { email };
+                console.log(user);
+                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.success) {
+                            navigate(location?.state ? location.state : '/');
+                        }
+                    })
+
             })
             .catch(error => {
                 console.error(error);

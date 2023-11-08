@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { MdAssignmentAdd } from "react-icons/md";
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const UpdateAssignment = () => {
 
@@ -28,6 +30,9 @@ const UpdateAssignment = () => {
     ];
 
 
+    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+
 
 
     const handleUpdateAssignment = e => {
@@ -40,7 +45,8 @@ const UpdateAssignment = () => {
         const description = form.description.value;
         const difficultyLevel = selectedDifficulty ? selectedDifficulty.value : null;
         const dueDate = selectedDate;
-        const updatedAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
+        const email = user.email;
+        const updatedAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate, email };
 
 
 
@@ -61,10 +67,49 @@ const UpdateAssignment = () => {
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     })
+                    navigate("/allassignments");
+
                 }
             })
 
 
+
+    }
+
+
+
+    const handleDeleteAssignment = _id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to delete this assignment!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:5000/assignments/${_id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: user.email }),
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your assignment has been deleted.',
+                                'success'
+                            )
+                            navigate("/allassignments");
+                        }
+                    })
+            }
+        })
 
     }
 
@@ -147,10 +192,12 @@ const UpdateAssignment = () => {
                             <div className="form-control mt-6">
                                 <button type="submit" className="btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Update Assignment</button>
                             </div>
-                            <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Delete Assignment</button>
-                            </div>
                         </form>
+                        <div className="card-body -mt-6">
+                            <div className="form-control">
+                                <button onClick={() => handleDeleteAssignment(_id)} type="submit" className="btn btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Delete Assignment</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

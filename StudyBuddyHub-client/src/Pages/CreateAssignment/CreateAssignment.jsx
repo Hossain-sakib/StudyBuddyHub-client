@@ -4,6 +4,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { MdAssignmentAdd } from "react-icons/md";
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../Providers/AuthProvider';
 
 
 const difficultyOptions = [
@@ -27,6 +30,11 @@ const CreateAssignment = () => {
     };
 
 
+    const navigate = useNavigate();
+
+    const {user} = useContext(AuthContext);
+
+
 
     const handleCreateAssignment = e => {
         e.preventDefault();
@@ -37,42 +45,37 @@ const CreateAssignment = () => {
         const description = form.description.value;
         const difficultyLevel = selectedDifficulty ? selectedDifficulty.value : null;
         const dueDate = selectedDate;
-        const newAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate };
-        
+        const email = user.email;
+        const newAssignment = { title, thumbnailURL, marks, description, difficultyLevel, dueDate ,email};
 
 
 
-        fetch('http://localhost:5000/assignments',{
+
+        fetch('http://localhost:5000/assignments', {
             method: 'POST',
-            headers:{
-                'content-type':'application/json'
+            headers: {
+                'content-type': 'application/json'
             },
             body: JSON.stringify(newAssignment)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if(data.insertedId){
+                if (data.insertedId) {
                     Swal.fire({
-                        title:'Success',
-                        text:'Assignment Created Successfully!',
-                        icon:'success',
-                        confirmButtonText:'Ok'
-                      })
+                        title: 'Success',
+                        text: 'Assignment Created Successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
+                    navigate("/allassignments");
                 }
             })
 
 
-        
+
 
     }
-
-
-
-
-
-
-
 
 
     return (
