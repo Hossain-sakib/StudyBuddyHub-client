@@ -3,7 +3,6 @@ import { useLoaderData } from "react-router-dom";
 const ViewAssignment = () => {
     const assignment = useLoaderData();
     const { thumbnailURL, title, description, _id, difficultyLevel, marks } = assignment || {};
-    console.log(assignment);
     return (
         <div className="hero min-h-screen bg-base-200 my-6">
             <div className="hero-content flex-col lg:flex-row-reverse border-2 border-black">
