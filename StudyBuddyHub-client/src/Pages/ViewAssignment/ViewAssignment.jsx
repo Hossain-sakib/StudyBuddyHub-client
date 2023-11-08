@@ -14,7 +14,7 @@ const ViewAssignment = () => {
                     <div className="badge badge-secondary badge-outline">{difficultyLevel}</div>
                     <h1 className="text-xl font-bold">Marks: {marks}</h1>
                     <p className="py-6">{description}</p>
-                    <Link to='/submitassignment'>
+                    <Link to={`/submitassignment/${_id}`}>
                         <button className="btn btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Take Assignment</button>
                     </Link>
                 </div>
