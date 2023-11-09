@@ -11,6 +11,7 @@ import UpdateAssignment from "../Pages/UpdateAssignment/UpdateAssignment";
 import ViewAssignment from "../Pages/ViewAssignment/ViewAssignment";
 import MyAssignments from "../Pages/MyAssignments/MyAssignments";
 import SubmitAssignment from "../Pages/SubmitAssignment/SubmitAssignment";
+import SubmittedAssignment from "../Pages/SubmittedAssignment/SubmittedAssignment";
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
       {
         path: '/myassignments',
         element: <PrivateRoute><MyAssignments></MyAssignments></PrivateRoute>
+      },
+      {
+        path: '/submittedassignment',
+        element: <PrivateRoute><SubmittedAssignment></SubmittedAssignment></PrivateRoute>,
+       
       },
       {
         path: '/createassignment',

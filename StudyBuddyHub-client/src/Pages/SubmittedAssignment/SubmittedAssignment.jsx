@@ -1,37 +1,36 @@
-import { useContext } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
-import { useEffect } from "react";
+
 import { useState } from "react";
-import TableData from "./TableData";
+import SubmittedTableData from "./SubmittedTableData";
+import { useEffect } from "react";
 
-const MyAssignments = () => {
-    const { user } = useContext(AuthContext);
 
+const SubmittedAssignment = () => {
     const [userData, setUserData] = useState();
-    const url = `http://localhost:5000/submittedassignments?email=${user.email}`
+    const url = 'http://localhost:5000/submittedassignments';
 
     useEffect(() => {
         fetch(url)
             .then(res => res.json())
             .then(data => setUserData(data))
     }, [url])
-    return (
 
+
+
+    return (
         <div className="overflow-x-auto my-6">
             <table className="table">
                 <thead>
                     <tr className="text-lg">
                         <th>Title</th>
-                        <th>Status</th>
+                        <th>Examinee name</th>
                         <th>Full Marks</th>
-                        <th>Obtained Marks</th>
-                        <th>Feedback</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        userData?.map(tableData=><TableData key={tableData._id} tableData={tableData}></TableData>)
-                        
+                        userData?.map(tableData => <SubmittedTableData key={tableData._id} tableData={tableData}></SubmittedTableData>)
+
                     }
                 </tbody>
             </table>
@@ -39,4 +38,4 @@ const MyAssignments = () => {
     );
 };
 
-export default MyAssignments;
+export default SubmittedAssignment;

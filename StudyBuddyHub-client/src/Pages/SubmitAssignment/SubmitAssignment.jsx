@@ -5,11 +5,13 @@ import Swal from "sweetalert2";
 
 
 
+
 const SubmitAssignment = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const assignmentData = useLoaderData();
-    const {  title, marks } = assignmentData || {};
+    const {  title, marks, } = assignmentData || {};
+
 
     const handleSubmitAssignment = e => {
         e.preventDefault()
@@ -17,8 +19,12 @@ const SubmitAssignment = () => {
         const pdf = form.pdf.value;
         const note = form.note.value;
         const email = user.email;
+        const name = user.displayName;
+        const status = 'Pending';
+        const givenMark = 'N/A';
+        const feedback = 'N/A'
         const submittedAssignment = {
-            pdf, note, email,title,marks
+            pdf, note, email,title,marks,name,status,givenMark,feedback
         }
         console.log(submittedAssignment);
 
@@ -58,7 +64,7 @@ const SubmitAssignment = () => {
                     <form onSubmit={handleSubmitAssignment} className="card-body">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Enter Pdf. Link</span>
+                                <span className="label-text">Enter Google Drive Pdf. Link</span>
                             </label>
                             <input type="text" name="pdf" placeholder="Pdf.link" className="input input-bordered" required />
                         </div>
@@ -69,7 +75,7 @@ const SubmitAssignment = () => {
                             <input type="text" name="note" placeholder="Short note" className="input input-bordered" required />
                         </div>
                         <div className="form-control mt-6">
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl">Submit</button>
                         </div>
                     </form>
                 </div>

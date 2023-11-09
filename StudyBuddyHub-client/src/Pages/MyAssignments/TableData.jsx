@@ -1,23 +1,23 @@
 
 
 const TableData = ({ tableData }) => {
-    const { title, marks } = tableData;
+    const { title, marks, status, givenMark, feedback } = tableData;
     return (
-        <tr>
+        <tr className="hover">
             <td>
                 {title}
             </td>
             <td>
-
+                {status}
             </td>
             <td>
                 {marks}
             </td>
             <td>
-
+                {givenMark}
             </td>
             <td>
-
+                {feedback}
             </td>
         </tr>
     );

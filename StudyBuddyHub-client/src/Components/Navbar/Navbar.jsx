@@ -65,7 +65,15 @@ const Navbar = () => {
                             isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
                         }
                     >
-                       All Assignments
+                        All Assignments
+                    </NavLink>
+                    <NavLink
+                        to="/submittedassignment"
+                        className={({ isActive }) =>
+                            isActive ? 'btn btn-primary btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl' : 'btn btn-ghost btn-sm overflow-hidden transition-all hover:scale-105  hover:shadow-2xl'
+                        }
+                    >
+                        Submitted Assignment
                     </NavLink>
                     <NavLink
                         to="/myassignments"
