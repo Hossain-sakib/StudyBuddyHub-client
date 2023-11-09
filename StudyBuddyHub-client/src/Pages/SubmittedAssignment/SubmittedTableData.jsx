@@ -3,12 +3,11 @@ import Swal from "sweetalert2";
 
 
 const SubmittedTableData = ({ tableData }) => {
-    const { title, name, marks, pdf } = tableData;
+    const { title, name, marks, _id } = tableData;
 
     const handleGiveMark = () => {
         document.getElementById('my_modal_4').showModal()
     }
-
     const navigate = useNavigate();
 
 
@@ -21,29 +20,30 @@ const SubmittedTableData = ({ tableData }) => {
         const status = 'Completed';
         const givenMark = form.mark.value;
         const feedback = form.feedback.value;
-        const submittedAssignment = {
-            marks, status, givenMark, feedback
+        const markAssignment = {
+            status, givenMark, feedback
         }
-        console.log(submittedAssignment);
+        console.log(markAssignment);
 
-        fetch('http://localhost:5000/submittedassignments', {
-            method: 'POST',
+        fetch(`http://localhost:5000/submittedassignments/${_id}`, {
+            method: 'PATCH',
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(submittedAssignment)
+            body: JSON.stringify(markAssignment)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.insertedId) {
+                if (data.modifiedCount > 0) {
                     Swal.fire({
                         title: 'Success',
                         text: 'Mark Given Successfully!',
                         icon: 'success',
                         confirmButtonText: 'Ok'
                     })
-                    navigate("/submittedassignments");
+                    navigate("/submittedassignment");
+                    
                 }
             })
 
@@ -74,12 +74,16 @@ const SubmittedTableData = ({ tableData }) => {
                             <input type="text" placeholder="Feedback" name="feedback" id="" className="border-2 py-6 border-black text-center" />
                             <div className="flex justify-center gap-6">
                                 <input type="text" placeholder="mark" name="mark" id="" className="w-24 border-2 border-black text-center" />
-                                <button type="submit" className="w-24 btn btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl btn-xs">Give Mark</button>
+                                <div method="dialog" >
+                                    <button method="dialog" type="submit" className="w-24 btn btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl btn-xs">Give Mark</button>
+                                </div>
                             </div>
                         </form>
-                        <form method="dialog" className="flex justify-center">
-                            <button className="w-24 btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl btn-xs">Close</button>
-                        </form>
+                        <div >
+                            <form method="dialog" className="flex justify-center">
+                                <button className="w-24 btn btn-outline btn-primary overflow-hidden transition-all hover:scale-105  hover:shadow-2xl btn-xs">Close</button>
+                            </form>
+                        </div>
                     </div>
                 </dialog>
             </td>

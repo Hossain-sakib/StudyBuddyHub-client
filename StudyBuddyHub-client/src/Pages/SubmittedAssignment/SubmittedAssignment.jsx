@@ -14,6 +14,8 @@ const SubmittedAssignment = () => {
             .then(data => setUserData(data))
     }, [url])
 
+    const pendingAssignments = userData?.filter((assignment) => assignment.status === 'Pending');
+
 
 
     return (
@@ -29,7 +31,7 @@ const SubmittedAssignment = () => {
                 </thead>
                 <tbody>
                     {
-                        userData?.map(tableData => <SubmittedTableData key={tableData._id} tableData={tableData}></SubmittedTableData>)
+                        pendingAssignments?.map(tableData => <SubmittedTableData key={tableData._id} tableData={tableData}></SubmittedTableData>)
 
                     }
                 </tbody>
