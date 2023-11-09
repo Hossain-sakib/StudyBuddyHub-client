@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import PropTypes from 'prop-types';
 
 
 const SubmittedTableData = ({ tableData }) => {
@@ -29,7 +30,7 @@ const SubmittedTableData = ({ tableData }) => {
 
         console.log(markAssignment);
 
-        fetch(`http://localhost:5000/submittedassignments/${_id}`, {
+        fetch(`https://study-buddy-hub-server.vercel.app/submittedassignments/${_id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json',
@@ -130,5 +131,9 @@ const SubmittedTableData = ({ tableData }) => {
         </tr>
     );
 };
+
+SubmittedTableData.propTypes = {
+    tableData: PropTypes.object
+}
 
 export default SubmittedTableData;

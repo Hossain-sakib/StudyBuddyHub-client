@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 
 const TableData = ({ tableData }) => {
     const { title, marks, status, givenMark, feedback } = tableData;
@@ -22,5 +22,11 @@ const TableData = ({ tableData }) => {
         </tr>
     );
 };
+
+
+TableData.propTypes = {
+    tableData: PropTypes.object
+}
+
 
 export default TableData;

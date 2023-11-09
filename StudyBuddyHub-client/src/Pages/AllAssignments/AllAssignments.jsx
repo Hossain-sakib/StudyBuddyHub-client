@@ -6,7 +6,7 @@ const AllAssignments = () => {
     const [assignments, setAssignments] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/assignments')
+        fetch('https://study-buddy-hub-server.vercel.app/assignments')
             .then((response) => response.json())
             .then((data) => setAssignments(data))
             .catch((error) => console.error('Error fetching data:', error));

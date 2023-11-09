@@ -8,7 +8,7 @@ const MyAssignments = () => {
     const { user } = useContext(AuthContext);
 
     const [userData, setUserData] = useState();
-    const url = `http://localhost:5000/submittedassignments?email=${user.email}`
+    const url = `https://study-buddy-hub-server.vercel.app/submittedassignments?email=${user.email}`
 
     useEffect(() => {
         fetch(url)

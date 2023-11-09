@@ -28,7 +28,7 @@ const SubmitAssignment = () => {
         }
         console.log(submittedAssignment);
 
-        fetch('http://localhost:5000/submittedassignments', {
+        fetch('https://study-buddy-hub-server.vercel.app/submittedassignments', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
