@@ -1,12 +1,13 @@
+import { BiLogoFacebook, BiLogoTwitter, BiLogoInstagram } from "react-icons/bi";
 const Footer = () => {
     return (
         <footer className="footer p-10 bg-base-200">
 
             <nav>
                 <h1 className="text-xl font-bold mb-2">Social link</h1>
-                <a className="link link-hover">#</a>
-                <a className="link link-hover">#</a>
-                <a className="link link-hover">#</a>
+                <a className="text-xl" href="https://facebook.com/studybuddyhub"><BiLogoFacebook></BiLogoFacebook></a>
+                <a className="text-xl " href="https://twitter.com/studybuddyhub"><BiLogoTwitter></BiLogoTwitter></a>
+                <a className="text-xl " href="https://instagram.com/studybuddyhub"><BiLogoInstagram></BiLogoInstagram></a>
             </nav>
             <nav>
                 <h1 className="text-xl font-bold mb-2">Navigations</h1>

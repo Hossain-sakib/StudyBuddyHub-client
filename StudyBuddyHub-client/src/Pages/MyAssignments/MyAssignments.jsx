@@ -23,8 +23,8 @@ const MyAssignments = () => {
                     <tr className="text-lg">
                         <th>Title</th>
                         <th>Status</th>
-                        <th>Full Marks</th>
-                        <th>Obtained Marks</th>
+                        <th>Marks</th>
+                        <th>Obtained</th>
                         <th>Feedback</th>
                     </tr>
                 </thead>
