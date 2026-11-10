@@ -393,3 +393,11 @@ test("admin workspace has usable record forms and module navigation", async ({
   await expect(page.getByRole("button", { name: "Export CSV" })).toBeVisible();
   await page.screenshot({ path: "/tmp/studybuddy-admin.png", fullPage: true });
 });
+test('published CMS pages render content as text, without executing embedded markup', async ({ page }) => {
+ await page.route('**/api/pages/sample-guide',route=>route.fulfill({json:{title:'A useful learning guide',slug:'sample-guide',description:'A published resource',body:'<img src=x onerror="window.cmsInjection=true">'}}));
+ await page.goto('/?page=sample-guide');
+ await expect(page.getByRole('heading',{name:'A useful learning guide'})).toBeVisible();
+ await expect(page.locator('article')).toContainText('<img src=x');
+ await expect(page.locator('article img')).toHaveCount(0);
+ expect(await page.evaluate(()=>window.cmsInjection)).toBeUndefined();
+});
