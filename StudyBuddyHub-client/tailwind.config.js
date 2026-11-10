@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["DM Sans", "system-ui", "sans-serif"],
+        heading: ["Manrope", "system-ui", "sans-serif"],
+      },
+    },
   },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: ["lofi"],
-  },
+  plugins: [],
 };
