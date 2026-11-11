@@ -13,7 +13,7 @@ export default function PublicPage({ page, onAuth }) {
     if (description) description.content = page.description || page.title;
   }, [page]);
   return (
-    <div className="min-h-screen bg-[#fffdf9] text-slate-800">
+    <div className="min-h-screen bg-[#fffdf9] text-slate-800 dark:bg-slate-950 dark:text-slate-100">
       <header className="mx-auto flex max-w-5xl items-center justify-between gap-5 px-6 py-7">
         <a
           href="/"
@@ -30,18 +30,18 @@ export default function PublicPage({ page, onAuth }) {
         </button>
       </header>
       <main className="mx-auto max-w-3xl px-6 py-14">
-        <a href="/" className="text-sm text-violet-600">
+        <a href="/" className="text-sm text-violet-600 dark:text-violet-300">
           ← Back to Studybuddy
         </a>
         <h1 className="mt-8 font-heading text-4xl font-bold leading-tight tracking-tight">
           {page.title}
         </h1>
         {page.description && (
-          <p className="mt-5 text-lg leading-8 text-slate-500">
+          <p className="mt-5 text-lg leading-8 text-slate-500 dark:text-slate-400">
             {page.description}
           </p>
         )}
-        <article className="mt-10 whitespace-pre-wrap break-words text-base leading-9 text-slate-600">
+        <article className="mt-10 whitespace-pre-wrap break-words text-base leading-9 text-slate-600 dark:text-slate-200">
           {page.body}
         </article>
       </main>

@@ -78,7 +78,7 @@ test("signed-in learner completes a lesson, quiz, assignment, and finds courses 
     page.getByRole("heading", { name: "No courses found" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Show all courses" }).click();
-  await expect(page.locator(".course-card")).toHaveCount(6);
+  await expect(page.locator(".course-card")).toHaveCount(18);
   expect(errors).toEqual([]);
 });
 async function register(page, name, email) {
@@ -309,7 +309,7 @@ test("public course discovery filters topics, searches, and shows starter challe
   await page.goto("/");
   await expect(page.locator(".public-course")).toHaveCount(6);
   await page.getByRole("button", { name: "Design", exact: true }).click();
-  await expect(page.locator(".public-course")).toHaveCount(1);
+  await expect(page.locator(".public-course")).toHaveCount(5);
   await page.getByRole("button", { name: "All topics", exact: true }).click();
   await page
     .getByRole("searchbox", { name: "Search public courses" })
@@ -391,6 +391,22 @@ test("admin workspace has usable record forms and module navigation", async ({
     page.getByRole("cell", { name: "Sample Contact", exact: true }),
   ).toBeVisible();
   await expect(page.getByRole("button", { name: "Export CSV" })).toBeVisible();
+  for (const mode of ["light", "dark"]) {
+    await page.evaluate(
+      (dark) => document.documentElement.classList.toggle("dark", dark),
+      mode === "dark",
+    );
+    for (const width of [320, 390, 768, 1024, 1440, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        )
+        .toBeTruthy();
+    }
+  }
   await page.screenshot({ path: "/tmp/studybuddy-admin.png", fullPage: true });
 });
 test("published CMS pages render content as text, without executing embedded markup", async ({

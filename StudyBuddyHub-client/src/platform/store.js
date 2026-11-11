@@ -6,6 +6,7 @@ export function createWorkspace() {
     completed: {},
     enrolled: ["design", "web"],
     quizzes: {},
+    bookmarks: [],
     assignments: [],
     goal: 3,
     activity: [],

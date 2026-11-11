@@ -1,3 +1,6 @@
+import { FiBookmark } from "react-icons/fi";
+import CourseArtwork from "./CourseArtwork";
+import WorkspaceShell from "./WorkspaceShell";
 import DeleteTaskPanel from "./views/DeleteTaskPanel";
 import SubmissionPanel from "./views/SubmissionPanel";
 import AssignmentPanel from "./views/AssignmentPanel";
@@ -21,28 +24,17 @@ import {
   FiCheckSquare,
   FiMessageCircle,
   FiBarChart2,
-  FiSettings,
   FiArrowUpRight,
   FiArrowRight,
-  FiChevronRight,
   FiPlus,
   FiX,
-  FiMenu,
   FiZap,
-  FiCode,
-  FiPenTool,
-  FiTrendingUp,
   FiClock,
 } from "react-icons/fi";
 import { googleIdentity, googleError } from "./googleAuth";
 import Landing from "./Landing";
 import SharedAssignments from "./SharedAssignments";
 import { api, courses as starterCourses, createWorkspace } from "./store";
-const icons = {
-  design: FiPenTool,
-  code: FiCode,
-  growth: FiTrendingUp,
-};
 const nav = [
   ["dashboard", FiGrid, "Overview"],
   ["courses", FiBookOpen, "My learning"],
@@ -78,7 +70,6 @@ export default function Platform() {
   const [search, setSearch] = useState("");
   const [assignmentMode, setAssignmentMode] = useState("personal");
   const [filter, setFilter] = useState("All topics");
-  const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(null);
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
@@ -93,15 +84,22 @@ export default function Platform() {
   const session = useRef(0);
   const [focusSeconds, setFocusSeconds] = useState(25 * 60);
   const [focusing, setFocusing] = useState(false);
+  const focusRemaining = useRef(focusSeconds);
+  useEffect(() => {
+    focusRemaining.current = focusSeconds;
+  }, [focusSeconds]);
   function notify(message) {
     setNotice(message);
     clearTimeout(noticeTimer.current);
     noticeTimer.current = setTimeout(() => setNotice(""), 5000);
   }
   function go(value) {
+    if (value === "shared-assignments") {
+      setAssignmentMode("shared");
+      value = "assignments";
+    }
     window.location.hash = value;
     setPage(value);
-    setMobile(false);
     setSearch("");
   }
   useEffect(() => {
@@ -140,18 +138,14 @@ export default function Platform() {
   }, []);
   useEffect(() => {
     if (!focusing) return;
-    const timer = setInterval(
-      () =>
-        setFocusSeconds((s) => {
-          if (s <= 1) {
-            setFocusing(false);
-            return 0;
-          }
-          return s - 1;
-        }),
-      1000,
-    );
+    const deadline = Date.now() + focusRemaining.current * 1000;
+    const timer = setInterval(() => {
+      const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      setFocusSeconds(remaining);
+      if (!remaining) setFocusing(false);
+    }, 250);
     return () => clearInterval(timer);
+    // A deadline keeps the countdown accurate when browser timers are throttled.
   }, [focusing]);
   useEffect(() => {
     if (page !== "community" || !user) return;
@@ -410,60 +404,98 @@ export default function Platform() {
   }
   const chat = user ? messages : state.messages.filter((m) => m.room === room);
   function courseCard(c) {
-    const Icon = icons[c.icon];
     const progress = percent(state, c);
+    const saved = (state.bookmarks || []).includes(c.id);
     return (
-      <article className={ui("course-card")} key={c.id}>
-        <div className={ui(`course-art ${c.color}`)}>
-          <span className={ui("art-orbit")} />
-          <span className={ui("art-grid")} />
-          <Icon />
-          <span className={ui("level")}>{c.level}</span>
-          <span className={ui("art-dot")} />
+      <article
+        key={c.id}
+        className="course-card group overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-2 shadow-sm transition hover:border-violet-200 hover:shadow-md dark:border-slate-700/70 dark:bg-slate-900 dark:hover:border-violet-900/60"
+      >
+        <div className="relative">
+          <CourseArtwork course={c} />
+          <button
+            disabled={busy}
+            aria-label={`${saved ? "Unsave" : "Save"} ${c.title}`}
+            aria-pressed={saved}
+            onClick={async () => {
+              const bookmarks = saved
+                ? (state.bookmarks || []).filter((id) => id !== c.id)
+                : [...(state.bookmarks || []), c.id];
+              if (
+                await update({
+                  ...state,
+                  bookmarks,
+                })
+              )
+                notify(
+                  saved
+                    ? "Course removed from saved."
+                    : "Course saved for later.",
+                );
+            }}
+            className={`absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full border border-white/80 shadow-sm  dark:border-slate-700 ${saved ? "bg-violet-600 text-white" : "bg-white/90 text-slate-500 hover:text-violet-600 dark:bg-slate-900/90 dark:text-slate-400 dark:hover:text-violet-300"}`}
+          >
+            <FiBookmark className="h-3.5 w-3.5" />
+          </button>
         </div>
-        <div className={ui("course-content")}>
-          <span className={ui(`eyebrow ${c.color}-text`)}>{c.category}</span>
-          <h3>{c.title}</h3>
-          <p className={ui("teacher")}>
-            <span className={ui(`tiny-avatar ${c.color}`)}>
+        <div className="px-3 pb-3 pt-5">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[9px] font-semibold uppercase tracking-wider text-violet-400">
+              {c.category}
+            </span>
+            <span className="rounded-md bg-slate-50 px-2 py-1 text-[8px] text-slate-400 dark:bg-slate-800/50">
+              {c.level}
+            </span>
+          </div>
+          <h3 className="mt-3 font-heading text-sm font-bold leading-6 tracking-tight text-slate-700 dark:text-slate-200">
+            {c.title}
+          </h3>
+          <p className="mt-3 flex items-center gap-2 text-[10px] text-slate-400">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-violet-50 text-[7px] font-semibold text-violet-400 dark:bg-violet-950/30">
               {c.teacher
                 .split(" ")
+                .slice(0, 2)
                 .map((w) => w[0])
                 .join("")}
             </span>
             {c.teacher}
           </p>
-          <div className={ui("course-meta")}>
-            <span>
-              <FiBookOpen /> {c.lessons.length} lessons
+          <div className="mt-4 flex items-center justify-between border-b border-slate-100 pb-4 text-[9px] text-slate-400 dark:border-slate-700/70">
+            <span className="flex items-center gap-1.5">
+              <FiBookOpen />
+              {c.lessons.length} lessons
             </span>
-            <span>
-              <FiClock /> {c.duration}
+            <span className="flex items-center gap-1.5">
+              <FiClock />
+              {c.duration}
             </span>
           </div>
           {state.enrolled.includes(c.id) && (
-            <>
-              <div className={ui("progress-label")}>
+            <div className="mt-4">
+              <div className="flex justify-between text-[9px] text-slate-400">
                 <span>
                   {progress === 100
                     ? "Completed. You did it!"
                     : "Your progress"}
                 </span>
-                <b>{progress}%</b>
+                <strong className="font-medium text-violet-500 dark:text-violet-400">
+                  {progress}%
+                </strong>
               </div>
-              <div className={ui("progress-track")}>
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-violet-50 dark:bg-violet-950/30">
                 <span
+                  className="block h-full rounded-full bg-violet-400 transition-all"
                   style={{
-                    width: `${progress}%`,
+                    width: progress + "%",
                   }}
                 />
               </div>
-            </>
+            </div>
           )}
           <button
-            className={ui("course-button")}
-            onClick={() => openCourse(c)}
             disabled={busy}
+            onClick={() => openCourse(c)}
+            className="mt-5 flex w-full items-center justify-between rounded-lg bg-violet-50 px-3 py-2.5 text-[10px] font-semibold text-violet-600 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-300 dark:hover:bg-violet-900/40"
           >
             {progress === 100
               ? "Revisit course"
@@ -493,359 +525,197 @@ export default function Platform() {
           />
         )}
         {user && (
-          <>
-            {mobile && (
-              <button
-                className={ui("sidebar-shade")}
-                aria-label="Close navigation"
-                onClick={() => setMobile(false)}
-              />
-            )}
-            <aside className={ui(`sidebar ${mobile ? "is-open" : ""}`)}>
-              <a
-                className={ui("brand")}
-                href="#dashboard"
-                onClick={() => setMobile(false)}
-              >
-                <img
-                  className={ui("brand-mark")}
-                  src="/brand/mark.svg"
-                  width="38"
-                  height="38"
-                  alt=""
-                />
-                <span>
-                  studybuddy<span className={ui("brand-dot")}>.</span>
-                </span>
-              </a>
-              <div className={ui("workspace-label")}>YOUR LEARNING SPACE</div>
-              <nav aria-label="Main navigation">
-                {nav.map(([id, Icon, label]) => (
-                  <a
-                    href={`#${id}`}
-                    key={id}
-                    onClick={() => {
-                      setMobile(false);
-                      setSearch("");
-                    }}
-                    className={ui(page === id ? "active" : "")}
-                  >
-                    <Icon />
-                    <span>{label}</span>
-                    {id === "community" && (
-                      <span className={ui("nav-new")}>NEW</span>
-                    )}
-                  </a>
-                ))}
-              </nav>
-              <div className={ui("sidebar-bottom")}>
-                {user?.role === "admin" && (
-                  <a
-                    href="#admin"
-                    className="mb-4 flex items-center gap-2 rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white"
-                  >
-                    Administration
-                  </a>
-                )}
-                <div className={ui("sidebar-tip")}>
-                  <span className={ui("tip-spark")}>✦</span>
-                  <strong>
-                    A little every day.
-                    <br />A lot along the way.
-                  </strong>
-                  <p>
-                    Your next big idea starts
-                    <br />
-                    with a small step.
-                  </p>
-                  <button onClick={() => go("courses")}>
-                    Find your next course <FiArrowRight />
-                  </button>
+          <WorkspaceShell user={user} page={page} onNavigate={go}>
+            <div className={ui("page-heading")}>
+              <div>
+                <div className={ui("overline")}>
+                  {page === "dashboard"
+                    ? "LET’S MAKE TODAY COUNT"
+                    : "A LITTLE CURIOSITY GOES A LONG WAY"}
                 </div>
-                <a
-                  href="#settings"
-                  className={ui(
-                    page === "settings" ? "settings active" : "settings",
+                <h1>
+                  {page === "dashboard" ? (
+                    <>
+                      Hey {user?.name || state.name}, ready to grow?{" "}
+                      <span className={ui("wave")}>✦</span>
+                    </>
+                  ) : (
+                    {
+                      courses: "Your next “aha!” moment.",
+                      assignments: "Big ideas. Small steps.",
+                      quizzes: "Put your knowledge to play.",
+                      community: "Better, together.",
+                      progress: "Look how far you’ve come.",
+                      settings: "Make yourself at home.",
+                      admin: "Everything, in one place.",
+                    }[page]
                   )}
-                >
-                  <FiSettings /> Settings
-                </a>
+                </h1>
+                <p>
+                  {
+                    {
+                      dashboard:
+                        "A fresh day, a new discovery. Let’s learn something amazing.",
+                      courses:
+                        "Explore a little. Learn a lot. Find something that sparks your curiosity.",
+                      assignments:
+                        "Keep your learning on track, one assignment at a time.",
+                      quizzes:
+                        "No pressure. Just practice, feedback, and a little more confidence.",
+                      community:
+                        "Ask a question, share a win, or find your next study buddy.",
+                      progress:
+                        "Every lesson is a step forward. Here’s your learning story.",
+                      settings:
+                        "Your profile, your goals, your learning journey.",
+                      admin: "Manage your learning and business workspace.",
+                    }[page]
+                  }
+                </p>
+              </div>
+              {page === "dashboard" && (
                 <button
-                  className={ui("profile")}
-                  onClick={() => {
-                    setAuthMode("login");
-                    setModal({
-                      type: "auth",
-                    });
-                  }}
+                  className={ui("button white")}
+                  onClick={() => go("courses")}
                 >
-                  <span className={ui("avatar")}>
-                    {(user?.name || state.name).slice(0, 1).toUpperCase()}
-                  </span>
-                  <span>
-                    <strong>{user?.name || state.name}</strong>
-                    <small>{user ? "Learner account" : "Demo workspace"}</small>
-                  </span>
-                  <FiChevronRight />
+                  Explore courses <FiArrowUpRight />
+                </button>
+              )}
+              {page === "assignments" && assignmentMode === "personal" && (
+                <button
+                  className={ui("button primary")}
+                  onClick={() =>
+                    setModal({
+                      type: "assignment",
+                    })
+                  }
+                >
+                  <FiPlus /> New assignment
+                </button>
+              )}
+            </div>
+
+            <DashboardOverview
+              courseCard={courseCard}
+              enrolled={enrolled}
+              finished={finished}
+              focusSeconds={focusSeconds}
+              focusing={focusing}
+              go={go}
+              lessonCount={lessonCount}
+              nextCourse={nextCourse}
+              openCourse={openCourse}
+              page={page}
+              setFocusSeconds={setFocusSeconds}
+              setFocusing={setFocusing}
+              setModal={setModal}
+              state={state}
+              xp={xp}
+            />
+            <CourseCatalog
+              courseCard={courseCard}
+              filter={filter}
+              page={page}
+              search={search}
+              setFilter={setFilter}
+              setSearch={setSearch}
+              visibleCourses={visibleCourses}
+              state={state}
+            />
+            {page === "assignments" && (
+              <div className={ui("assignment-tabs tabs")}>
+                <button
+                  className={ui(
+                    assignmentMode === "personal" ? "selected" : "",
+                  )}
+                  onClick={() => setAssignmentMode("personal")}
+                >
+                  My tasks
+                </button>
+                <button
+                  className={ui(assignmentMode === "shared" ? "selected" : "")}
+                  onClick={() => setAssignmentMode("shared")}
+                >
+                  Community assignments
                 </button>
               </div>
-            </aside>
-            <div className={ui("main-shell")}>
-              <header className={ui("topbar")}>
-                <div className={ui("breadcrumb")}>
-                  <button
-                    className={ui("icon-button mobile-menu")}
-                    aria-label="Open navigation"
-                    onClick={() => setMobile(true)}
-                  >
-                    <FiMenu />
-                  </button>
-                  <span>My workspace</span>
-                  <FiChevronRight />
-                  <strong>
-                    {nav.find((n) => n[0] === page)?.[2] || "Settings"}
-                  </strong>
-                </div>
-                <div className={ui("top-actions")}>
-                  <span className={ui("date-label")}>
-                    {new Date().toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      weekday: "short",
-                    })}
-                  </span>
-                  <button
-                    className={ui("mode-label")}
-                    onClick={() =>
-                      user
-                        ? go("settings")
-                        : (setAuthMode("register"),
-                          setModal({
-                            type: "auth",
-                          }))
-                    }
-                  >
-                    {user ? "Account connected" : "Demo mode"}
-                    <span />
-                  </button>
-                  <span className={ui("avatar small")}>
-                    {(user?.name || state.name).slice(0, 1).toUpperCase()}
-                  </span>
-                </div>
-              </header>
-              <main id="main-content">
-                <div className={ui("page-heading")}>
-                  <div>
-                    <div className={ui("overline")}>
-                      {page === "dashboard"
-                        ? "LET’S MAKE TODAY COUNT"
-                        : "A LITTLE CURIOSITY GOES A LONG WAY"}
-                    </div>
-                    <h1>
-                      {page === "dashboard" ? (
-                        <>
-                          Hey {user?.name || state.name}, ready to grow?{" "}
-                          <span className={ui("wave")}>✦</span>
-                        </>
-                      ) : (
-                        {
-                          courses: "Your next “aha!” moment.",
-                          assignments: "Big ideas. Small steps.",
-                          quizzes: "Put your knowledge to play.",
-                          community: "Better, together.",
-                          progress: "Look how far you’ve come.",
-                          settings: "Make yourself at home.",
-                          admin: "Everything, in one place.",
-                        }[page]
-                      )}
-                    </h1>
-                    <p>
-                      {
-                        {
-                          dashboard:
-                            "A fresh day, a new discovery. Let’s learn something amazing.",
-                          courses:
-                            "Explore a little. Learn a lot. Find something that sparks your curiosity.",
-                          assignments:
-                            "Keep your learning on track, one assignment at a time.",
-                          quizzes:
-                            "No pressure. Just practice, feedback, and a little more confidence.",
-                          community:
-                            "Ask a question, share a win, or find your next study buddy.",
-                          progress:
-                            "Every lesson is a step forward. Here’s your learning story.",
-                          settings:
-                            "Your profile, your goals, your learning journey.",
-                          admin: "Manage your learning and business workspace.",
-                        }[page]
-                      }
-                    </p>
-                  </div>
-                  {page === "dashboard" && (
-                    <button
-                      className={ui("button white")}
-                      onClick={() => go("courses")}
-                    >
-                      Explore courses <FiArrowUpRight />
-                    </button>
-                  )}
-                  {page === "assignments" && assignmentMode === "personal" && (
-                    <button
-                      className={ui("button primary")}
-                      onClick={() =>
-                        setModal({
-                          type: "assignment",
-                        })
-                      }
-                    >
-                      <FiPlus /> New assignment
-                    </button>
-                  )}
-                </div>
-                {!user && (
-                  <div className={ui("demo-strip")}>
-                    <span>
-                      <span className={ui("live-dot")} />
-                      Your personal demo · progress is saved in this browser
-                    </span>
-                    <button
-                      onClick={() => {
-                        setAuthMode("register");
-                        setModal({
-                          type: "auth",
-                        });
-                      }}
-                    >
-                      Create an account <FiArrowRight />
-                    </button>
-                  </div>
-                )}
-                <DashboardOverview
-                  courseCard={courseCard}
-                  enrolled={enrolled}
-                  finished={finished}
-                  focusSeconds={focusSeconds}
-                  focusing={focusing}
-                  go={go}
-                  lessonCount={lessonCount}
-                  nextCourse={nextCourse}
-                  openCourse={openCourse}
-                  page={page}
-                  setFocusSeconds={setFocusSeconds}
-                  setFocusing={setFocusing}
-                  setModal={setModal}
-                  state={state}
-                  xp={xp}
-                />
-                <CourseCatalog
-                  courseCard={courseCard}
-                  filter={filter}
-                  page={page}
-                  search={search}
-                  setFilter={setFilter}
-                  setSearch={setSearch}
-                  visibleCourses={visibleCourses}
-                />
-                {page === "assignments" && (
-                  <div className={ui("assignment-tabs tabs")}>
-                    <button
-                      className={ui(
-                        assignmentMode === "personal" ? "selected" : "",
-                      )}
-                      onClick={() => setAssignmentMode("personal")}
-                    >
-                      My tasks
-                    </button>
-                    <button
-                      className={ui(
-                        assignmentMode === "shared" ? "selected" : "",
-                      )}
-                      onClick={() => setAssignmentMode("shared")}
-                    >
-                      Community assignments
-                    </button>
-                  </div>
-                )}
-                {page === "assignments" && assignmentMode === "shared" && (
-                  <SharedAssignments
-                    user={user}
-                    notify={notify}
-                    openAuth={() => {
-                      setAuthMode("register");
-                      setModal({
-                        type: "auth",
-                      });
-                    }}
-                  />
-                )}
-                <PersonalAssignments
-                  assignmentMode={assignmentMode}
-                  busy={busy}
-                  page={page}
-                  setModal={setModal}
-                  state={state}
-                  today={today}
-                  update={update}
-                />
-                <PracticeQuizzes
-                  courses={courses}
-                  page={page}
-                  quiz={quiz}
-                  state={state}
-                />
-                <StudyLounge
-                  busy={busy}
-                  chat={chat}
-                  chatError={chatError}
-                  page={page}
-                  room={room}
-                  sendMessage={sendMessage}
-                  setRoom={setRoom}
-                  user={user}
-                />
-                <LearnerProgress
-                  download={download}
-                  enrolled={enrolled}
-                  finished={finished}
-                  lessonCount={lessonCount}
-                  page={page}
-                  percent={percent}
-                  state={state}
-                  xp={xp}
-                />
-                <AccountSettings
-                  busy={busy}
-                  download={download}
-                  go={go}
-                  notify={notify}
-                  page={page}
-                  session={session}
-                  setAuthMode={setAuthMode}
-                  setFocusing={setFocusing}
-                  setModal={setModal}
-                  setState={setState}
-                  setUser={setUser}
-                  state={state}
-                  update={update}
-                  user={user}
-                />
-                {page === "admin" && (
-                  <Suspense
-                    fallback={<p role="status">Loading administration…</p>}
-                  >
-                    <Admin user={user} />
-                  </Suspense>
-                )}
-                <footer className={ui("page-footer")}>
-                  <span>
-                    <span className={ui("brand-dot")}>✦</span> Made for curious
-                    minds.
-                  </span>
-                  <span>A little better, every day.</span>
-                </footer>
-              </main>
-            </div>
-          </>
+            )}
+            {page === "assignments" && assignmentMode === "shared" && (
+              <SharedAssignments
+                user={user}
+                notify={notify}
+                openAuth={() => {
+                  setAuthMode("register");
+                  setModal({
+                    type: "auth",
+                  });
+                }}
+              />
+            )}
+            <PersonalAssignments
+              assignmentMode={assignmentMode}
+              busy={busy}
+              page={page}
+              setModal={setModal}
+              state={state}
+              today={today}
+              update={update}
+            />
+            <PracticeQuizzes
+              courses={courses}
+              page={page}
+              quiz={quiz}
+              state={state}
+            />
+            <StudyLounge
+              busy={busy}
+              chat={chat}
+              chatError={chatError}
+              page={page}
+              room={room}
+              sendMessage={sendMessage}
+              setRoom={setRoom}
+              user={user}
+            />
+            <LearnerProgress
+              download={download}
+              enrolled={enrolled}
+              finished={finished}
+              lessonCount={lessonCount}
+              page={page}
+              percent={percent}
+              state={state}
+              xp={xp}
+            />
+            <AccountSettings
+              busy={busy}
+              download={download}
+              go={go}
+              notify={notify}
+              page={page}
+              session={session}
+              setAuthMode={setAuthMode}
+              setFocusing={setFocusing}
+              setModal={setModal}
+              setState={setState}
+              setUser={setUser}
+              state={state}
+              update={update}
+              user={user}
+            />
+            {page === "admin" && (
+              <Suspense fallback={<p role="status">Loading administration…</p>}>
+                <Admin user={user} />
+              </Suspense>
+            )}
+            <footer className={ui("page-footer")}>
+              <span>
+                <span className={ui("brand-dot")}>✦</span> Made for curious
+                minds.
+              </span>
+              <span>A little better, every day.</span>
+            </footer>
+          </WorkspaceShell>
         )}
       </div>
       {notice && (

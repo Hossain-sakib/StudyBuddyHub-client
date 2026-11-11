@@ -32,11 +32,13 @@ for (const relative of [
   "assignments.js",
   "firebase-token.js",
   "readiness.js",
+  "notifications.js",
   "seed-samples.js",
   "admin/routes.js",
   "admin/resources.js",
   "media/routes.js",
   "data/catalog.json",
+  "data/demo-content.json",
   "netlify/functions/api.js",
 ]) {
   await mkdir(path.dirname(path.join(target, "backend", relative)), {
@@ -51,7 +53,7 @@ for (const name of ["package.json", "package-lock.json"])
   await cp(path.join(backend, name), path.join(target, name));
 await writeFile(
   path.join(target, "netlify.toml"),
-  `[build]\n  publish = "dist"\n  functions = "backend/netlify/functions"\n\n[build.environment]\n  NODE_VERSION = "24"\n\n[functions]\n  node_bundler = "esbuild"\n  included_files = ["backend/data/catalog.json"]\n\n[[redirects]]\n  from = "/api/*"\n  to = "/.netlify/functions/api/api/:splat"\n  status = 200\n  force = true\n\n[[headers]]\n  for = "/*"\n  [headers.values]\n    X-Content-Type-Options = "nosniff"\n    Referrer-Policy = "strict-origin-when-cross-origin"\n    X-Frame-Options = "DENY"\n    Permissions-Policy = "camera=(), microphone=(), geolocation=()"\n    Cross-Origin-Opener-Policy = "same-origin-allow-popups"\n`,
+  `[build]\n  publish = "dist"\n  functions = "backend/netlify/functions"\n\n[build.environment]\n  NODE_VERSION = "24"\n\n[functions]\n  node_bundler = "esbuild"\n  included_files = ["backend/data/catalog.json", "backend/data/demo-content.json"]\n\n[[redirects]]\n  from = "/api/*"\n  to = "/.netlify/functions/api/api/:splat"\n  status = 200\n  force = true\n\n[[headers]]\n  for = "/*"\n  [headers.values]\n    X-Content-Type-Options = "nosniff"\n    Referrer-Policy = "strict-origin-when-cross-origin"\n    X-Frame-Options = "DENY"\n    Permissions-Policy = "camera=(), microphone=(), geolocation=()"\n    Cross-Origin-Opener-Policy = "same-origin-allow-popups"\n`,
 );
 console.log(
   `Prepared frontend and API in ${target}. No credentials or user data copied.`,

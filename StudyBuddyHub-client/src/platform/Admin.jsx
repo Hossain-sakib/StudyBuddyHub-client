@@ -13,7 +13,7 @@ import {
   FiArrowRight,
 } from "react-icons/fi";
 const inputClass =
-  "mt-2 w-full rounded-xl border border-violet-100 bg-violet-50/40 px-3 py-2.5 text-sm text-slate-800 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100";
+  "mt-2 w-full rounded-xl border border-violet-100 bg-violet-50/40 px-3 py-2.5 text-sm text-slate-800 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-100 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-slate-100";
 const buttonClass =
   "inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-50";
 export default function Admin({ user }) {
@@ -56,7 +56,11 @@ export default function Admin({ user }) {
     try {
       await api(url, {
         method,
-        ...(body ? { body: JSON.stringify(body) } : {}),
+        ...(body
+          ? {
+              body: JSON.stringify(body),
+            }
+          : {}),
       });
       setDialog(null);
       await refresh();
@@ -70,7 +74,7 @@ export default function Admin({ user }) {
     return (
       <div
         role="alert"
-        className="rounded-2xl border border-red-100 bg-white p-8 text-slate-700"
+        className="rounded-2xl border border-red-100 bg-white p-8 text-slate-700 dark:border-red-900/60 dark:bg-slate-900 dark:text-slate-200"
       >
         Administrator access is required.
       </div>
@@ -96,7 +100,9 @@ export default function Admin({ user }) {
       .map((row) => row.map(cell).join(","))
       .join("\r\n");
     const url = URL.createObjectURL(
-      new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" }),
+      new Blob(["\uFEFF" + csv], {
+        type: "text/csv;charset=utf-8",
+      }),
     );
     const a = document.createElement("a");
     a.href = url;
@@ -131,7 +137,7 @@ export default function Admin({ user }) {
               setModule(key);
               setQuery("");
             }}
-            className={`rounded-xl border px-3 py-2 text-xs font-medium ${module === key ? "border-violet-600 bg-violet-600 text-white" : "border-violet-100 bg-white text-slate-600 hover:bg-violet-50"}`}
+            className={`rounded-xl border px-3 py-2 text-xs font-medium ${module === key ? "border-violet-600 bg-violet-600 text-white" : "border-violet-100 bg-white text-slate-600 hover:bg-violet-50 dark:border-violet-900/60 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-violet-950/30"}`}
           >
             {title}
           </button>
@@ -140,13 +146,13 @@ export default function Admin({ user }) {
       {error && (
         <p
           role="alert"
-          className="rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-800"
+          className="rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-200"
         >
           {error}
         </p>
       )}
       {loading && (
-        <p role="status" className="text-sm text-slate-500">
+        <p role="status" className="text-sm text-slate-500 dark:text-slate-400">
           Loading this workspace…
         </p>
       )}
@@ -157,23 +163,23 @@ export default function Admin({ user }) {
               <button
                 key={key}
                 onClick={() => setModule(key)}
-                className="rounded-2xl border border-violet-100 bg-white p-5 text-left shadow-sm"
+                className="rounded-2xl border border-violet-100 bg-white p-5 text-left shadow-sm dark:border-violet-900/60 dark:bg-slate-900"
               >
-                <span className="block text-3xl font-bold tracking-tight text-violet-700">
+                <span className="block text-3xl font-bold tracking-tight text-violet-700 dark:text-violet-300">
                   {value}
                 </span>
-                <span className="mt-2 block text-sm capitalize text-slate-500">
+                <span className="mt-2 block text-sm capitalize text-slate-500 dark:text-slate-400">
                   {key}
                 </span>
               </button>
             ))}
           </div>
-          <div className="rounded-2xl border border-violet-100 bg-white p-6">
-            <h3 className="font-semibold text-slate-800">
+          <div className="rounded-2xl border border-violet-100 bg-white p-6 dark:border-violet-900/60 dark:bg-slate-900">
+            <h3 className="font-semibold text-slate-800 dark:text-slate-100">
               Recent administrative activity
             </h3>
             {!overview?.auditLogs.length && (
-              <p className="mt-4 text-sm text-slate-500">
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                 Your administrative changes will appear here.
               </p>
             )}
@@ -183,9 +189,11 @@ export default function Admin({ user }) {
                   key={event.id}
                   className="flex flex-wrap justify-between gap-3 py-3 text-sm"
                 >
-                  <span className="text-slate-700">
+                  <span className="text-slate-700 dark:text-slate-200">
                     {event.action}{" "}
-                    <span className="text-violet-600">{event.resource}</span>
+                    <span className="text-violet-600 dark:text-violet-300">
+                      {event.resource}
+                    </span>
                   </span>
                   <time className="text-xs text-slate-400">
                     {new Date(event.createdAt).toLocaleString()}
@@ -198,10 +206,10 @@ export default function Admin({ user }) {
       ) : module === "media" ? (
         <MediaLibrary />
       ) : (
-        <div className="rounded-2xl border border-violet-100 bg-white p-5 md:p-7">
+        <div className="rounded-2xl border border-violet-100 bg-white p-5 md:p-7 dark:border-violet-900/60 dark:bg-slate-900">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <span className="text-xs uppercase tracking-widest text-violet-500">
+              <span className="text-xs uppercase tracking-widest text-violet-500 dark:text-violet-400">
                 {resource?.group || "Administration"}
               </span>
               <h2 className="mt-1 text-xl font-bold capitalize">
@@ -211,34 +219,38 @@ export default function Admin({ user }) {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={exportRows}
-                className="inline-flex items-center gap-2 rounded-xl border border-violet-100 px-3 py-2 text-xs text-slate-600"
+                className="inline-flex items-center gap-2 rounded-xl border border-violet-100 px-3 py-2 text-xs text-slate-600 dark:border-violet-900/60 dark:text-slate-200"
               >
                 <FiDownload /> Export CSV
               </button>
               {resource && (
                 <button
                   className={buttonClass}
-                  onClick={() => setDialog({ type: "edit" })}
+                  onClick={() =>
+                    setDialog({
+                      type: "edit",
+                    })
+                  }
                 >
                   <FiPlus /> Add record
                 </button>
               )}
             </div>
           </div>
-          <label className="mt-6 flex max-w-md items-center gap-2 rounded-xl border border-violet-100 px-3 py-2 text-slate-400">
+          <label className="mt-6 flex max-w-md items-center gap-2 rounded-xl border border-violet-100 px-3 py-2 text-slate-400 dark:border-violet-900/60">
             <FiSearch />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Search admin records"
-              className="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 outline-none"
+              className="min-w-0 flex-1 border-0 bg-transparent text-sm text-slate-700 outline-none dark:text-slate-200"
               placeholder="Find a record…"
             />
           </label>
           <div className="mt-5 overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-violet-100 text-xs text-slate-500">
+                <tr className="border-b border-violet-100 text-xs text-slate-500 dark:border-violet-900/60 dark:text-slate-400">
                   <th className="p-3">Name / title</th>
                   <th className="p-3">Details</th>
                   <th className="p-3">Status</th>
@@ -249,12 +261,12 @@ export default function Admin({ user }) {
                 {visible.map((row) => (
                   <tr
                     key={row.id}
-                    className="border-b border-violet-50 align-top"
+                    className="border-b border-violet-50 align-top dark:border-violet-900/60"
                   >
-                    <td className="max-w-xs break-words p-3 font-medium text-slate-700">
+                    <td className="max-w-xs break-words p-3 font-medium text-slate-700 dark:text-slate-200">
                       {row.name || row.title || row.number || row.id}
                     </td>
-                    <td className="max-w-sm break-words p-3 text-xs leading-6 text-slate-500">
+                    <td className="max-w-sm break-words p-3 text-xs leading-6 text-slate-500 dark:text-slate-400">
                       {row.email ||
                         row.customer ||
                         row.description ||
@@ -263,7 +275,7 @@ export default function Admin({ user }) {
                         "—"}
                     </td>
                     <td className="p-3">
-                      <span className="rounded-lg bg-violet-50 px-2 py-1 text-xs text-violet-700">
+                      <span className="rounded-lg bg-violet-50 px-2 py-1 text-xs text-violet-700 dark:bg-violet-950/30 dark:text-violet-300">
                         {row.disabled
                           ? "Disabled"
                           : row.status ||
@@ -277,8 +289,13 @@ export default function Admin({ user }) {
                           row.role !== "admin" && (
                             <button
                               aria-label={`${row.disabled ? "Enable" : "Disable"} ${row.name}`}
-                              className="text-xs text-violet-600"
-                              onClick={() => setDialog({ type: "toggle", row })}
+                              className="text-xs text-violet-600 dark:text-violet-300"
+                              onClick={() =>
+                                setDialog({
+                                  type: "toggle",
+                                  row,
+                                })
+                              }
                             >
                               {row.disabled ? "Enable" : "Disable"}
                             </button>
@@ -288,16 +305,26 @@ export default function Admin({ user }) {
                             {resource && (
                               <button
                                 aria-label={`Edit ${row.title || row.name || row.number}`}
-                                onClick={() => setDialog({ type: "edit", row })}
-                                className="text-violet-500"
+                                onClick={() =>
+                                  setDialog({
+                                    type: "edit",
+                                    row,
+                                  })
+                                }
+                                className="text-violet-500 dark:text-violet-400"
                               >
                                 <FiEdit2 />
                               </button>
                             )}
                             <button
                               aria-label={`Delete ${row.title || row.name || row.id}`}
-                              onClick={() => setDialog({ type: "delete", row })}
-                              className="text-rose-500"
+                              onClick={() =>
+                                setDialog({
+                                  type: "delete",
+                                  row,
+                                })
+                              }
+                              className="text-rose-500 dark:text-rose-400"
                             >
                               <FiTrash2 />
                             </button>
@@ -310,7 +337,7 @@ export default function Admin({ user }) {
               </tbody>
             </table>
             {!loading && !visible.length && (
-              <div className="py-12 text-center text-sm text-slate-500">
+              <div className="py-12 text-center text-sm text-slate-500 dark:text-slate-400">
                 No records yet.{" "}
                 {resource
                   ? "Add the first one to get started."
@@ -327,7 +354,7 @@ export default function Admin({ user }) {
             if (busy) e.preventDefault();
             else setDialog(null);
           }}
-          className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-32px)] max-w-xl overflow-auto rounded-2xl border-0 bg-white p-7 text-slate-700 shadow-2xl backdrop:bg-slate-950/50"
+          className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%_-_2rem)] max-w-xl overflow-auto rounded-2xl border-0 bg-white p-7 text-slate-700 shadow-2xl backdrop:bg-slate-950/50 dark:bg-slate-900 dark:text-slate-200"
           aria-labelledby="admin-dialog-title"
         >
           <button
@@ -346,7 +373,10 @@ export default function Admin({ user }) {
                 : "Delete this record?"}
           </h2>
           {error && (
-            <p role="alert" className="mt-4 text-sm text-red-700">
+            <p
+              role="alert"
+              className="mt-4 text-sm text-red-700 dark:text-red-300"
+            >
               {error}
             </p>
           )}
@@ -373,7 +403,7 @@ export default function Admin({ user }) {
             >
               {Object.entries(resource.fields).map(([key, f]) => (
                 <label
-                  className="block text-xs font-medium text-slate-600"
+                  className="block text-xs font-medium text-slate-600 dark:text-slate-200"
                   key={key}
                 >
                   {f.label}
@@ -426,7 +456,7 @@ export default function Admin({ user }) {
             </form>
           ) : (
             <>
-              <p className="mt-5 text-sm leading-7 text-slate-500">
+              <p className="mt-5 text-sm leading-7 text-slate-500 dark:text-slate-400">
                 {dialog.type === "toggle"
                   ? `This changes sign-in access for ${dialog.row.email}. Their data will be retained.`
                   : "This removes the selected record. This action cannot be undone."}
@@ -435,7 +465,7 @@ export default function Admin({ user }) {
                 <button
                   disabled={busy}
                   onClick={() => setDialog(null)}
-                  className="rounded-xl border border-slate-200 px-4 py-2 text-sm"
+                  className="rounded-xl border border-slate-200 px-4 py-2 text-sm dark:border-slate-700/70"
                 >
                   Cancel
                 </button>
@@ -461,5 +491,7 @@ export default function Admin({ user }) {
   );
 }
 Admin.propTypes = {
-  user: PropTypes.shape({ role: PropTypes.string }).isRequired,
+  user: PropTypes.shape({
+    role: PropTypes.string,
+  }).isRequired,
 };

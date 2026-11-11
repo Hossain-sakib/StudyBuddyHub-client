@@ -26,6 +26,9 @@ Vite proxies `/api` to the backend. Production uses one Netlify origin with `/ap
 
 - `src/platform/Landing.jsx`: public course discovery, learning paths, sample challenges and FAQs.
 - `src/platform/Platform.jsx`: session state and workspace navigation.
+- `src/platform/WorkspaceShell.jsx`: responsive workspace navigation and header.
+- `src/platform/NotificationCenter.jsx`: per-user notification inbox and read controls.
+- `src/platform/theme/`: persisted light, dark and device appearance settings.
 - `src/platform/views/`: separate learning, progress, task, settings and authentication views.
 - `src/platform/Admin.jsx`: schema-driven CRM/ERP/CMS administration.
 - `src/platform/MediaLibrary.jsx`: authorized Cloudinary media operations.
@@ -57,3 +60,11 @@ Playwright uses isolated API/frontend processes and temporary storage. Tests cov
 Run `npm run prepare:netlify`; install production dependencies in `.netlify-deploy`, then deploy that directory with the Netlify CLI. The generated deployment includes the backend and functions, without `.env`, Git metadata or local user data. Runtime settings must be configured separately. No payment integration is included.
 
 The all-in-one admin modules are a working operational foundation, not a complete audited accounting, payroll or regulatory-compliance system. Production approval still needs real-provider tests, backup/restore validation, independent security review and account recovery procedures.
+
+## Demo content and notifications
+
+The bundled catalog has 18 demo courses. The backend insert-only seed includes 174 labeled sample records across learning, community, CRM, tasks, inventory, HR, invoices and CMS. It never creates fake user accounts or replaces existing records. Database seeding runs only after MongoDB is reachable with SEED_SAMPLE_CONTENT=true.
+
+Signed-in users receive in-app welcome, due-task, quiz, course-completion, submission and feedback notifications. The inbox shows unread counts, opens the related workspace and supports individual/all read controls. It refreshes every 30 seconds while the tab is visible. This release does not send email or browser push notifications.
+
+Layout tests exercise the public website, learner pages and admin records at 320, 390, 768, 1024, 1440 and 1920 pixel widths in both themes. Provider integration still needs a reachable MongoDB cluster and Cloudinary runtime credentials.

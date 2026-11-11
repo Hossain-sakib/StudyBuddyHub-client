@@ -1,3 +1,4 @@
+import AppearanceSettings from "../theme/AppearanceSettings";
 import { ui } from "../ui";
 import { FiCheck, FiLogOut, FiArrowRight, FiDownload } from "react-icons/fi";
 import { api, createWorkspace } from "../store";
@@ -21,6 +22,7 @@ export default function AccountSettings({
   return (
     page === "settings" && (
       <div className={ui("settings-grid")}>
+        <AppearanceSettings />
         <form
           className={ui("panel settings-form")}
           onSubmit={async (e) => {

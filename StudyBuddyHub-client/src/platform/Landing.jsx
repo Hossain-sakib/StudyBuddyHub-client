@@ -1,3 +1,7 @@
+import CoursePreview from "./CoursePreview";
+import PublicFooter from "./PublicFooter";
+import PublicHeader from "./PublicHeader";
+import CourseArtwork from "./CourseArtwork";
 import PublicPage from "./PublicPage";
 import { ui } from "./ui";
 import { useEffect, useState } from "react";
@@ -19,14 +23,11 @@ import {
   FiTarget,
 } from "react-icons/fi";
 import { courses, api } from "./store";
-const symbols = {
-  design: FiPenTool,
-  code: FiCode,
-  growth: FiTrendingUp,
-};
 export default function Landing({ onAuth }) {
   const [contentPage, setContentPage] = useState(null);
   const [publishedPages, setPublishedPages] = useState([]);
+  const [preview, setPreview] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const [topic, setTopic] = useState("All topics");
   const [query, setQuery] = useState("");
   const [catalog, setCatalog] = useState(courses);
@@ -88,6 +89,7 @@ export default function Landing({ onAuth }) {
   );
   function explore(category) {
     setTopic(category);
+    setPageNumber(1);
     setQuery("");
     document.getElementById("explore")?.scrollIntoView({
       behavior: "smooth",
@@ -99,30 +101,7 @@ export default function Landing({ onAuth }) {
       <a className={ui("skip-link")} href="#public-content">
         Skip to content
       </a>
-      <header className={ui("site-header")}>
-        <a href="#home" className={ui("brand")} aria-label="Studybuddy home">
-          <img src="/brand/mark.svg" width="40" height="40" alt="" />
-          <span>
-            studybuddy<span className={ui("brand-dot")}>.</span>
-          </span>
-        </a>
-        <nav aria-label="Website navigation">
-          <a href="#explore">Explore courses</a>
-          <a href="#how-it-works">How it works</a>
-          <a href="#learn-together">Community</a>
-        </nav>
-        <div className={ui("site-auth")}>
-          <button className={ui("site-signin")} onClick={() => onAuth("login")}>
-            Sign in
-          </button>
-          <button
-            className={ui("button primary")}
-            onClick={() => onAuth("register")}
-          >
-            Create an account <FiArrowUpRight />
-          </button>
-        </div>
-      </header>
+      <PublicHeader onAuth={onAuth} />
       <main id="public-content" className={ui("public-main")}>
         <section className={ui("website-hero")}>
           <div className={ui("website-hero-copy")}>
@@ -163,40 +142,24 @@ export default function Landing({ onAuth }) {
               </span>
             </div>
           </div>
-          <div className={ui("website-hero-art")} aria-hidden="true">
-            <div className={ui("art-circle one")} />
-            <div className={ui("art-circle two")} />
-            <span className={ui("art-spark top")}>✦</span>
-            <span className={ui("art-spark bottom")}>✧</span>
-            <div className={ui("illustrated-book back")}>
-              <span>
-                IDEAS
-                <br />
-                IN MOTION
-              </span>
-            </div>
-            <div className={ui("illustrated-book front")}>
-              <img src="/brand/mark.svg" alt="" />
-              <span>
-                A little better.
-                <br />
-                Every day.
-              </span>
-              <i />
-            </div>
-            <div className={ui("site-floating idea")}>
-              <span>✦</span>Your next “aha!” moment
-            </div>
-            <div className={ui("site-floating lesson")}>
-              <span>
-                <FiCheck />
-              </span>
-              <div>
-                Small steps. Real progress.
-                <small>One discovery at a time.</small>
-              </div>
-            </div>
-            <div className={ui("site-art-dots")} />
+          <div
+            aria-hidden="true"
+            className="mx-auto w-full max-w-[500px] lg:max-w-none"
+          >
+            <img
+              src="/brand/learning-hero.svg"
+              width="500"
+              height="450"
+              alt=""
+              className="block h-auto w-full dark:hidden"
+            />
+            <img
+              src="/brand/learning-hero-dark.svg"
+              width="500"
+              height="450"
+              alt=""
+              className="hidden h-auto w-full dark:block"
+            />
           </div>
         </section>
         <section
@@ -240,7 +203,10 @@ export default function Landing({ onAuth }) {
                   <button
                     className={ui(topic === t ? "selected" : "")}
                     aria-pressed={topic === t}
-                    onClick={() => setTopic(t)}
+                    onClick={() => {
+                      setTopic(t);
+                      setPageNumber(1);
+                    }}
                     key={t}
                   >
                     {t}
@@ -255,42 +221,124 @@ export default function Landing({ onAuth }) {
                 aria-label="Search public courses"
                 placeholder="What sparks your curiosity?"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setPageNumber(1);
+                }}
               />
             </label>
           </div>
           <div className={ui("public-course-grid")}>
-            {shown.map((c) => {
-              const Icon = symbols[c.icon];
-              return (
-                <article className={ui("public-course")} key={c.id}>
-                  <div className={ui(`course-art ${c.color}`)}>
-                    <span className={ui("art-orbit")} />
-                    <span className={ui("art-grid")} />
-                    <Icon />
-                    <span className={ui("level")}>{c.level}</span>
-                  </div>
-                  <div className={ui("public-course-body")}>
-                    <span className={ui("eyebrow")}>{c.category}</span>
-                    <h3>{c.title}</h3>
-                    <p>{c.description}</p>
-                    <div className={ui("public-course-meta")}>
-                      <span>
-                        <FiBookOpen />
-                        {c.lessons.length} lessons
-                      </span>
-                      <span>
-                        <FiClock />
-                        {c.duration}
-                      </span>
+            {shown
+              .slice(
+                (Math.min(
+                  pageNumber,
+                  Math.max(1, Math.ceil(shown.length / 6)),
+                ) -
+                  1) *
+                  6,
+                Math.min(pageNumber, Math.max(1, Math.ceil(shown.length / 6))) *
+                  6,
+              )
+              .map((c) => {
+                return (
+                  <article
+                    key={c.id}
+                    className="public-course group overflow-hidden rounded-[18px] border border-slate-200/70 bg-white p-2 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-violet-200 hover:shadow-lg dark:border-slate-700/70 dark:bg-slate-900 dark:hover:border-violet-900/60"
+                  >
+                    <CourseArtwork course={c} />
+                    <div className="px-4 pb-4 pt-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[9px] font-semibold uppercase tracking-[.12em] text-violet-400">
+                          {c.category}
+                        </span>
+                        {c.isSample && (
+                          <span className="rounded-md bg-slate-50 px-2 py-1 text-[8px] text-slate-400 dark:bg-slate-800/50">
+                            Demo
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="mt-3 font-heading text-[17px] font-bold leading-7 tracking-tight text-slate-700 dark:text-slate-200">
+                        {c.title}
+                      </h3>
+                      <p className="mt-3 min-h-[72px] text-xs leading-6 text-slate-400">
+                        {c.description}
+                      </p>
+                      <div className="mt-5 flex items-center justify-between border-b border-slate-100 pb-4 text-[10px] text-slate-400 dark:border-slate-700/70">
+                        <span className="flex items-center gap-2">
+                          <FiBookOpen />
+                          {c.lessons.length} lessons
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <FiClock />
+                          {c.duration}
+                        </span>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between gap-3">
+                        <button
+                          aria-label={`Preview ${c.title}`}
+                          onClick={() => setPreview(c)}
+                          className="text-[11px] font-semibold text-slate-500 transition hover:text-violet-600 dark:text-slate-400 dark:hover:text-violet-300"
+                        >
+                          Preview course
+                        </button>
+                        <button
+                          onClick={() => onAuth("register")}
+                          className="flex items-center gap-2 rounded-xl bg-[#f0eafb] px-4 py-2.5 text-[10px] font-semibold text-violet-600 transition hover:bg-violet-100 dark:bg-slate-800 dark:text-violet-300 dark:hover:bg-violet-900/40"
+                        >
+                          Start learning
+                          <FiArrowUpRight />
+                        </button>
+                      </div>
                     </div>
-                    <button onClick={() => onAuth("register")}>
-                      Start learning <FiArrowUpRight />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })}
+          </div>
+          <div
+            aria-label="Course pagination"
+            className="mt-8 flex flex-wrap items-center justify-between gap-4"
+          >
+            <p className="text-xs text-slate-400">
+              Showing{" "}
+              {shown.length
+                ? (Math.min(
+                    pageNumber,
+                    Math.max(1, Math.ceil(shown.length / 6)),
+                  ) -
+                    1) *
+                    6 +
+                  1
+                : 0}
+              –{Math.min(pageNumber * 6, shown.length)} of {shown.length}{" "}
+              courses
+              <span className="ml-2 text-slate-300 dark:text-slate-500">
+                · Demo collection
+              </span>
+            </p>
+            {shown.length > 6 && (
+              <div className="flex items-center gap-2">
+                <button
+                  aria-label="Previous courses"
+                  disabled={pageNumber <= 1}
+                  onClick={() => setPageNumber((n) => n - 1)}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs text-slate-500 disabled:opacity-30 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-400"
+                >
+                  Previous
+                </button>
+                <span className="px-3 text-xs text-slate-400">
+                  {pageNumber} / {Math.ceil(shown.length / 6)}
+                </span>
+                <button
+                  aria-label="Next courses"
+                  disabled={pageNumber >= Math.ceil(shown.length / 6)}
+                  onClick={() => setPageNumber((n) => n + 1)}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs text-slate-500 disabled:opacity-30 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-400"
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
           {!shown.length && (
             <div className={ui("empty-state")}>
@@ -562,7 +610,7 @@ export default function Landing({ onAuth }) {
         >
           {publishedPages.map((p) => (
             <a
-              className="text-sm text-violet-600"
+              className="text-sm text-violet-600 dark:text-violet-300"
               href={"/?page=" + encodeURIComponent(p.slug)}
               key={p.slug}
             >
@@ -571,18 +619,17 @@ export default function Landing({ onAuth }) {
           ))}
         </nav>
       )}
-      <footer className={ui("site-footer")}>
-        <a href="#home" className={ui("brand")}>
-          <img src="/brand/mark.svg" width="32" height="32" alt="" />
-          <span>
-            studybuddy<span className={ui("brand-dot")}>.</span>
-          </span>
-        </a>
-        <p>Made for curious minds. A little better, every day.</p>
-        <a href="#explore">
-          Keep exploring <FiArrowUpRight />
-        </a>
-      </footer>
+      <PublicFooter onAuth={onAuth} pages={publishedPages} />
+      {preview && (
+        <CoursePreview
+          course={preview}
+          onClose={() => setPreview(null)}
+          onStart={() => {
+            setPreview(null);
+            onAuth("register");
+          }}
+        />
+      )}
     </div>
   );
 }
