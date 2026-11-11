@@ -31,6 +31,7 @@ for (const relative of [
   "index.js",
   "assignments.js",
   "firebase-token.js",
+  "readiness.js",
   "seed-samples.js",
   "admin/routes.js",
   "admin/resources.js",
