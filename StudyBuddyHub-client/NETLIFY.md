@@ -53,3 +53,7 @@ Email setup: create a sending API key in Resend → API Keys, verify a domain in
 Use SMTP_HOST=smtp.gmail.com, SMTP_PORT=465, SMTP_USER=your Gmail address, MAIL_FROM=Studybuddy <your Gmail address>, and APP_URL=https://studybuddy-hub.netlify.app. Enable Google Account → Security → 2-Step Verification, then create an app password at https://myaccount.google.com/apppasswords. Store it only as SMTP_PASS in Netlify environment variables. The normal Gmail password is not supported. App passwords can be unavailable for some managed accounts or advanced-protection configurations. Redeploy after saving the password and test a real verification/recovery email. Gmail account sending limits apply; use a transactional provider when volume grows.
 
 SMTP uses authenticated TLS (465) or required STARTTLS (587); certificate verification is never disabled. Fully configured SMTP takes priority over Resend. No custom domain is needed for Gmail SMTP.
+
+## Portfolio embedding
+
+The generated deployment uses Content-Security-Policy: frame-ancestors 'self' https://sakib-studio.netlify.app; to permit the owner's portfolio preview. X-Frame-Options: DENY is removed because it conflicts with cross-origin framing. Other external origins remain blocked. A portfolio origin change must be reflected in scripts/prepare-netlify.mjs and redeployed. This header is enforced by the embedded Studybuddy site; the portfolio cannot override a restrictive child-site header.
