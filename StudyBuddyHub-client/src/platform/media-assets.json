@@ -1,1 +1,54 @@
-{}
+{
+  "/apple-touch-icon.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475817/studybuddy/site/apple-touch-icon-db8e118ef9d62d7f.png",
+    "id": "studybuddy/site/apple-touch-icon-db8e118ef9d62d7f"
+  },
+  "/brand/learning-hero-dark.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475818/studybuddy/site/brand/learning-hero-dark-c6a1d8d25f147681.svg",
+    "id": "studybuddy/site/brand/learning-hero-dark-c6a1d8d25f147681"
+  },
+  "/brand/learning-hero.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475821/studybuddy/site/brand/learning-hero-4f9d6743fb17e22d.svg",
+    "id": "studybuddy/site/brand/learning-hero-4f9d6743fb17e22d"
+  },
+  "/brand/logo.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475823/studybuddy/site/brand/logo-8dd3f955a9190c2a.svg",
+    "id": "studybuddy/site/brand/logo-8dd3f955a9190c2a"
+  },
+  "/brand/mark.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475825/studybuddy/site/brand/mark-af8493537c6a243f.svg",
+    "id": "studybuddy/site/brand/mark-af8493537c6a243f"
+  },
+  "/brand/social-card.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475828/studybuddy/site/brand/social-card-8ea5f886998a050e.png",
+    "id": "studybuddy/site/brand/social-card-8ea5f886998a050e"
+  },
+  "/brand/social-card.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475829/studybuddy/site/brand/social-card-ff224e7bb7a107f9.svg",
+    "id": "studybuddy/site/brand/social-card-ff224e7bb7a107f9"
+  },
+  "/favicon-16x16.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475831/studybuddy/site/favicon-16x16-025992c524b4345e.png",
+    "id": "studybuddy/site/favicon-16x16-025992c524b4345e"
+  },
+  "/favicon-32x32.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475832/studybuddy/site/favicon-32x32-6d105ae73e7f4b34.png",
+    "id": "studybuddy/site/favicon-32x32-6d105ae73e7f4b34"
+  },
+  "/favicon.ico": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475833/studybuddy/site/favicon-44556cc04e29cc39.ico",
+    "id": "studybuddy/site/favicon-44556cc04e29cc39"
+  },
+  "/favicon.svg": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475834/studybuddy/site/favicon-af8493537c6a243f.svg",
+    "id": "studybuddy/site/favicon-af8493537c6a243f"
+  },
+  "/icon-192.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475837/studybuddy/site/icon-192-639c7051360f3c89.png",
+    "id": "studybuddy/site/icon-192-639c7051360f3c89"
+  },
+  "/icon-512.png": {
+    "url": "https://res.cloudinary.com/wiooqx7y/image/upload/v1794475837/studybuddy/site/icon-512-1a415a8e31a6ef2c.png",
+    "id": "studybuddy/site/icon-512-1a415a8e31a6ef2c"
+  }
+}

@@ -1,3 +1,4 @@
+import { Agent } from "node:https";
 import { createRequire } from "node:module";
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import path from "node:path";
@@ -44,6 +45,9 @@ if (!process.env.CLOUDINARY_URL)
     secure: true,
   });
 else cloudinary.config({ secure: true });
+// Respect the execution environment's HTTPS proxy without weakening TLS checks.
+const proxy = process.env.HTTPS_PROXY || process.env.HTTP_PROXY;
+const uploadAgent = proxy ? new Agent({ proxyEnv: process.env }) : undefined;
 const manifestFile = path.join(root, "src/platform/media-assets.json");
 const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
 for (const file of files) {
@@ -63,6 +67,7 @@ for (const file of files) {
     type: "upload",
     overwrite: false,
     unique_filename: false,
+    ...(uploadAgent ? { agent: uploadAgent } : {}),
   });
   if (!result.secure_url?.startsWith("https://res.cloudinary.com/"))
     throw new Error("Unexpected Cloudinary image URL.");

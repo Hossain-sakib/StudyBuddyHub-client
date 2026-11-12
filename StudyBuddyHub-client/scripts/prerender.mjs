@@ -48,7 +48,8 @@ const media = JSON.parse(
 for (const [source, asset] of Object.entries(media)) {
   html = html
     .replaceAll(`src="${source}"`, `src="${asset.url}"`)
-    .replaceAll(`href="${source}"`, `href="${asset.url}"`);
+    .replaceAll(`href="${source}"`, `href="${asset.url}"`)
+    .replaceAll(`${origin}${source}`, asset.url);
 }
 await writeFile(file, html);
 await writeFile(
