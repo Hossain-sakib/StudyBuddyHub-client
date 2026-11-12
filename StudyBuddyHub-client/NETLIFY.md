@@ -47,3 +47,9 @@ Before real business use, validate backups/restoration, recovery/support procedu
 Get the cloud name, API key and API secret from Cloudinary Console → Settings → API Keys. Save them in Netlify environment variables; never use VITE_ variables for the secret. The site-media upload script needs the same server-side variables in its execution environment. It uploads the 13 owned image files, checks public delivery, and writes a public URL manifest. SVG/PDF delivery permissions may require account configuration. Local brand originals remain as fallbacks. The UI uses local assets until the manifest has verified mappings.
 
 Email setup: create a sending API key in Resend → API Keys, verify a domain in Resend → Domains, then set RESEND_API_KEY and MAIL_FROM in Netlify. DNS verification requires access to the sending domain. APP_URL is the site URL. Recovery returns an explicit unavailable message until configured. Redeploy after changing runtime variables.
+
+## Gmail sending without a custom domain
+
+Use SMTP_HOST=smtp.gmail.com, SMTP_PORT=465, SMTP_USER=your Gmail address, MAIL_FROM=Studybuddy <your Gmail address>, and APP_URL=https://studybuddy-hub.netlify.app. Enable Google Account → Security → 2-Step Verification, then create an app password at https://myaccount.google.com/apppasswords. Store it only as SMTP_PASS in Netlify environment variables. The normal Gmail password is not supported. App passwords can be unavailable for some managed accounts or advanced-protection configurations. Redeploy after saving the password and test a real verification/recovery email. Gmail account sending limits apply; use a transactional provider when volume grows.
+
+SMTP uses authenticated TLS (465) or required STARTTLS (587); certificate verification is never disabled. Fully configured SMTP takes priority over Resend. No custom domain is needed for Gmail SMTP.
