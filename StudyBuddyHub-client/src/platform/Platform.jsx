@@ -1,3 +1,4 @@
+import AccountAction from "./AccountAction";
 import { FiBookmark } from "react-icons/fi";
 import CourseArtwork from "./CourseArtwork";
 import WorkspaceShell from "./WorkspaceShell";
@@ -62,6 +63,25 @@ function readPage() {
     : "dashboard";
 }
 export default function Platform() {
+  const [accountAction, setAccountAction] = useState(null);
+  useEffect(() => {
+    function readAction() {
+      const match = window.location.hash.match(
+        /^#(reset-password|verify-email)=([a-f0-9]{64})$/,
+      );
+      if (match) {
+        setAccountAction({ type: match[1], token: match[2] });
+        window.history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search,
+        );
+      }
+    }
+    readAction();
+    window.addEventListener("hashchange", readAction);
+    return () => window.removeEventListener("hashchange", readAction);
+  }, []);
   const [courses, setCourses] = useState(starterCourses);
   const [page, setPage] = useState(readPage);
   const [state, setState] = useState(createWorkspace);
@@ -284,6 +304,10 @@ export default function Platform() {
         method: "POST",
         body: JSON.stringify(fields),
       });
+      if (authMode === "forgot-password") {
+        notify(data.message);
+        return;
+      }
       session.current++;
       setUser(data.user);
       setState(data.state);
@@ -508,6 +532,16 @@ export default function Platform() {
       </article>
     );
   }
+  if (accountAction)
+    return (
+      <AccountAction
+        action={accountAction}
+        onClose={() => {
+          setAccountAction(null);
+          window.location.assign("/");
+        }}
+      />
+    );
   return (
     <div className={ui("app-shell")}>
       <div

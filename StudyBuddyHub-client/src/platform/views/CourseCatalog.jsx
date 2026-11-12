@@ -1,3 +1,4 @@
+import Select from "../Select";
 import { useState } from "react";
 import { FiSearch, FiBookOpen, FiBookmark } from "react-icons/fi";
 import PropTypes from "prop-types";
@@ -52,8 +53,8 @@ export default function CourseCatalog({
         </div>
         <label className="flex items-center gap-3 text-[11px] text-slate-400">
           Sort by
-          <select
-            aria-label="Sort courses"
+          <Select
+            label="Sort courses"
             value={sort}
             onChange={(e) => setSort(e.target.value)}
             className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-200"
@@ -61,7 +62,7 @@ export default function CourseCatalog({
             {["Recommended", "A to Z", "Your progress"].map((s) => (
               <option key={s}>{s}</option>
             ))}
-          </select>
+          </Select>
         </label>
       </div>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">

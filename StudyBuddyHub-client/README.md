@@ -65,6 +65,16 @@ The all-in-one admin modules are a working operational foundation, not a complet
 
 The bundled catalog has 18 demo courses. The backend insert-only seed includes 174 labeled sample records across learning, community, CRM, tasks, inventory, HR, invoices and CMS. It never creates fake user accounts or replaces existing records. Database seeding runs only after MongoDB is reachable with SEED_SAMPLE_CONTENT=true.
 
-Signed-in users receive in-app welcome, due-task, quiz, course-completion, submission and feedback notifications. The inbox shows unread counts, opens the related workspace and supports individual/all read controls. It refreshes every 30 seconds while the tab is visible. This release does not send email or browser push notifications.
+Signed-in users receive in-app welcome, due-task, quiz, course-completion, submission and feedback notifications. The inbox shows unread counts, opens the related workspace and supports individual/all read controls. It refreshes every 30 seconds while the tab is visible. Verified users can opt into email notifications once the Resend settings are configured. Browser push and an unattended reminder scheduler are not included.
 
 Layout tests exercise the public website, learner pages and admin records at 320, 390, 768, 1024, 1440 and 1920 pixel widths in both themes. Provider integration still needs a reachable MongoDB cluster and Cloudinary runtime credentials.
+
+## Latest administration and form controls
+
+Select.jsx provides the shared dropdown with keyboard navigation, type-ahead, selected states, Escape handling and placement inside native dialogs. Admin records have status filters, sorting, 20-row pagination and CSV export of the full filtered result. Course forms edit complete lesson/question lists; CRM leads convert into contacts without duplicates; inventory adjustments capture a reason and cannot create negative stock. Existing learner progress is protected from structural course edits.
+
+Published CMS articles use /resources/:slug and server-generated HTML with article metadata and a dynamic published-only sitemap. Legacy query links still render safely and use the article URL as canonical.
+
+Password recovery and email verification are available through the account UI once RESEND_API_KEY, MAIL_FROM and APP_URL are set on the backend. Settings exposes verified email opt-in. Real email delivery needs provider verification; tests currently use a mocked transport.
+
+Run npm run media:check to list the 13 owned image files. npm run media:upload uploads them to Cloudinary using server-side credentials, verifies public delivery and saves src/platform/media-assets.json after each successful upload. Content-based public IDs make retries safe. BrandImage uses those mappings and falls back to owned local originals. Rebuild and deploy after uploading. The script does not upload inline decorative React icons or arbitrary user data.

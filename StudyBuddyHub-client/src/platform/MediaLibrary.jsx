@@ -1,3 +1,4 @@
+import Select from "./Select";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   FiUploadCloud,
@@ -96,14 +97,15 @@ export default function MediaLibrary() {
         </label>
         <label className="text-xs text-slate-600 dark:text-slate-200">
           Visibility
-          <select
+          <Select
+            label="Media visibility"
             name="visibility"
             defaultValue="private"
             className="mt-2 block rounded-lg border border-violet-100 bg-white p-2 text-sm dark:border-violet-900/60 dark:bg-slate-900"
           >
             <option value="private">Private document or image</option>
             <option value="public">Public website image</option>
-          </select>
+          </Select>
         </label>
         <button
           disabled={busy}

@@ -1,3 +1,4 @@
+import BrandImage from "./BrandImage";
 import ThemeToggle from "./theme/ThemeToggle";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -26,7 +27,7 @@ export default function PublicHeader({ onAuth }) {
           aria-label="Studybuddy home"
           className="flex items-center gap-2.5 font-heading text-lg sm:text-[22px] font-extrabold tracking-[-1px] text-[#29223b] dark:text-slate-100"
         >
-          <img
+          <BrandImage
             src="/brand/mark.svg"
             width="37"
             height="37"

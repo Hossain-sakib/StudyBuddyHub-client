@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test": "playwright test",
     "prepare:netlify": "npm run build && node scripts/prepare-netlify.mjs",
-    "format": "prettier --write src scripts tests *.js *.cjs *.html"
+    "format": "prettier --write src scripts tests *.js *.cjs *.html",
+    "media:upload": "node scripts/upload-cloudinary.mjs",
+    "media:check": "node scripts/upload-cloudinary.mjs --dry-run"
   },
   "dependencies": {
     "@firebase/app": "^0.16.5",

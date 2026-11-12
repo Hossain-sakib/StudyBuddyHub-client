@@ -1,3 +1,4 @@
+import Select from "../Select";
 import { ui } from "../ui";
 import { FiPlus } from "react-icons/fi";
 import PropTypes from "prop-types";
@@ -76,13 +77,17 @@ export default function AssignmentPanel({
           <div className={ui("form-columns")}>
             <label>
               Topic
-              <select name="category" defaultValue={modal.assignment?.category}>
+              <Select
+                label="Assignment topic"
+                name="category"
+                defaultValue={modal.assignment?.category}
+              >
                 {["Design", "Development", "Personal growth", "Other"].map(
                   (c) => (
                     <option key={c}>{c}</option>
                   ),
                 )}
-              </select>
+              </Select>
             </label>
             <label>
               Due date (optional)

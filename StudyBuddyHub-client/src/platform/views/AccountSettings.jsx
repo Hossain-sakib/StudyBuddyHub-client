@@ -1,3 +1,5 @@
+import Select from "../Select";
+import AccountSecurity from "../AccountSecurity";
 import AppearanceSettings from "../theme/AppearanceSettings";
 import { ui } from "../ui";
 import { FiCheck, FiLogOut, FiArrowRight, FiDownload } from "react-icons/fi";
@@ -23,6 +25,7 @@ export default function AccountSettings({
     page === "settings" && (
       <div className={ui("settings-grid")}>
         <AppearanceSettings />
+        {user && <AccountSecurity user={user} setUser={setUser} />}
         <form
           className={ui("panel settings-form")}
           onSubmit={async (e) => {
@@ -62,13 +65,17 @@ export default function AccountSettings({
           </label>
           <label>
             Your weekly goal
-            <select name="goal" defaultValue={state.goal}>
+            <Select
+              label="Your weekly goal"
+              name="goal"
+              defaultValue={state.goal}
+            >
               {[1, 2, 3, 4, 5, 6, 7].map((n) => (
                 <option key={n} value={n}>
                   {n} active {n === 1 ? "day" : "days"} per week
                 </option>
               ))}
-            </select>
+            </Select>
           </label>
           <button className={ui("button primary")} disabled={busy}>
             Save changes <FiCheck />

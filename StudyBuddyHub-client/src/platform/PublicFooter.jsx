@@ -1,3 +1,4 @@
+import BrandImage from "./BrandImage";
 import PropTypes from "prop-types";
 import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 export default function PublicFooter({ onAuth, pages }) {
@@ -10,7 +11,7 @@ export default function PublicFooter({ onAuth, pages }) {
               href="#home"
               className="inline-flex items-center gap-2.5 font-heading text-2xl font-bold tracking-tight"
             >
-              <img src="/brand/mark.svg" width="38" height="38" alt="" />
+              <BrandImage src="/brand/mark.svg" width="38" height="38" alt="" />
               studybuddy<span className="-ml-2 text-violet-300">.</span>
             </a>
             <p className="mt-5 max-w-xs text-xs leading-7 text-violet-100/50">

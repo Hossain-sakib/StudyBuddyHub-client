@@ -1,3 +1,4 @@
+import BrandImage from "./BrandImage";
 import CoursePreview from "./CoursePreview";
 import PublicFooter from "./PublicFooter";
 import PublicHeader from "./PublicHeader";
@@ -146,14 +147,14 @@ export default function Landing({ onAuth }) {
             aria-hidden="true"
             className="mx-auto w-full max-w-[500px] lg:max-w-none"
           >
-            <img
+            <BrandImage
               src="/brand/learning-hero.svg"
               width="500"
               height="450"
               alt=""
               className="block h-auto w-full dark:hidden"
             />
-            <img
+            <BrandImage
               src="/brand/learning-hero-dark.svg"
               width="500"
               height="450"
@@ -611,7 +612,7 @@ export default function Landing({ onAuth }) {
           {publishedPages.map((p) => (
             <a
               className="text-sm text-violet-600 dark:text-violet-300"
-              href={"/?page=" + encodeURIComponent(p.slug)}
+              href={"/resources/" + encodeURIComponent(p.slug)}
               key={p.slug}
             >
               {p.title}

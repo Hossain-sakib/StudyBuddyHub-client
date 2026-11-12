@@ -1,3 +1,4 @@
+import BrandImage from "./BrandImage";
 import ThemeToggle from "./theme/ThemeToggle";
 import NotificationCenter from "./NotificationCenter";
 import { useEffect, useState } from "react";
@@ -66,7 +67,7 @@ export default function WorkspaceShell({ user, page, onNavigate, children }) {
             onClick={() => go("dashboard")}
             className="flex items-center gap-2.5 font-heading text-[22px] font-extrabold tracking-[-1px]"
           >
-            <img src="/brand/mark.svg" alt="" width="37" height="37" />
+            <BrandImage src="/brand/mark.svg" alt="" width="37" height="37" />
             studybuddy
             <span className="-ml-2 text-violet-500 dark:text-violet-400">
               .

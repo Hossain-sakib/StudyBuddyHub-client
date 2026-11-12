@@ -1,3 +1,4 @@
+import BrandImage from "../BrandImage";
 import PropTypes from "prop-types";
 import {
   FiArrowUpRight,
@@ -106,7 +107,7 @@ export default function DashboardOverview({
             >
               <div className="relative h-48 w-36 rotate-12 rounded-xl border border-white/10 bg-[#9c7bce] shadow-[14px_18px_0_0_#ffffff0a] dark:border-slate-700">
                 <div className="absolute inset-x-3 bottom-2 h-2 rounded bg-white/75 dark:bg-slate-900/75" />
-                <img
+                <BrandImage
                   src="/brand/mark.svg"
                   width="48"
                   height="48"

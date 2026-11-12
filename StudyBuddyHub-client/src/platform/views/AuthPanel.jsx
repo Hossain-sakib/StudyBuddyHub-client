@@ -1,3 +1,4 @@
+import BrandImage from "../BrandImage";
 import { ui } from "../ui";
 import { FiArrowRight } from "react-icons/fi";
 import PropTypes from "prop-types";
@@ -10,10 +11,41 @@ export default function AuthPanel({
   modal,
   setAuthMode,
 }) {
+  if (authMode === "forgot-password")
+    return (
+      <>
+        <h2 id="dialog-title">Find your way back.</h2>
+        <p className={ui("subtle")}>
+          Enter your account email to request a recovery link. Google accounts
+          should use Google sign-in.
+        </p>
+        <form className={ui("modal-form")} onSubmit={authenticate}>
+          <label>
+            Email address
+            <input
+              name="email"
+              type="email"
+              required
+              maxLength={254}
+              autoComplete="email"
+            />
+          </label>
+          <button className={ui("button primary")} disabled={busy || booting}>
+            {busy ? "One moment…" : "Send recovery link"}
+          </button>
+        </form>
+        <button
+          className={ui("text-button auth-switch")}
+          onClick={() => setAuthMode("login")}
+        >
+          Back to sign in
+        </button>
+      </>
+    );
   return (
     modal.type === "auth" && (
       <>
-        <img
+        <BrandImage
           className={ui("brand-mark")}
           src="/brand/mark.svg"
           width="38"
@@ -104,6 +136,15 @@ export default function AuthPanel({
             <FiArrowRight />
           </button>
         </form>
+        {authMode === "login" && (
+          <button
+            type="button"
+            className={ui("text-button auth-switch")}
+            onClick={() => setAuthMode("forgot-password")}
+          >
+            Forgot password?
+          </button>
+        )}
         <button
           className={ui("text-button auth-switch")}
           onClick={() =>

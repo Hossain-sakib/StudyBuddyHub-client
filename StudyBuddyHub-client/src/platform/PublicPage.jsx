@@ -1,3 +1,4 @@
+import BrandImage from "./BrandImage";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 export default function PublicPage({ page, onAuth }) {
@@ -6,7 +7,7 @@ export default function PublicPage({ page, onAuth }) {
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical)
       canonical.href = new URL(
-        "/?page=" + encodeURIComponent(page.slug),
+        "/resources/" + encodeURIComponent(page.slug),
         window.location.origin,
       ).href;
     const description = document.querySelector('meta[name="description"]');
@@ -19,7 +20,7 @@ export default function PublicPage({ page, onAuth }) {
           href="/"
           className="flex items-center gap-3 font-heading text-xl font-bold"
         >
-          <img src="/brand/mark.svg" width="38" height="38" alt="" />
+          <BrandImage src="/brand/mark.svg" width="38" height="38" alt="" />
           studybuddy.
         </a>
         <button

@@ -1,3 +1,4 @@
+import Select from "./Select";
 import { ui } from "./ui";
 import { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
@@ -262,7 +263,8 @@ export default function SharedAssignments({ user, notify, openAuth }) {
                 <div className={ui("form-columns")}>
                   <label>
                     Topic
-                    <select
+                    <Select
+                      label="Challenge topic"
                       name="category"
                       defaultValue={modal.assignment?.category || "Design"}
                     >
@@ -274,7 +276,7 @@ export default function SharedAssignments({ user, notify, openAuth }) {
                       ].map((c) => (
                         <option key={c}>{c}</option>
                       ))}
-                    </select>
+                    </Select>
                   </label>
                   <label>
                     Total marks

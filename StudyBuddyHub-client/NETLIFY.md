@@ -26,6 +26,8 @@ Use the Netlify CLI to deploy `.netlify-deploy` with `--prod --no-build`, its `d
 - FIREBASE_PROJECT_ID=studdy-buddy-hub-8cc52
 - ADMIN_EMAIL=mskib567@gmail.com (role assigned only after verified Google authentication)
 - CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET (or CLOUDINARY_URL): required for media uploads. These are backend-only settings.
+- RESEND_API_KEY, MAIL_FROM: optional email delivery settings from Resend; MAIL_FROM must use a verified sender domain.
+- APP_URL=https://studybuddy-hub.netlify.app: trusted base for account emails.
 - SEED_SAMPLE_CONTENT=true: enable insert-only starter seeding; disable after the first successful seed.
 
 Netlify's standard variable scope is supported; Functions-only scoping requires a paid Netlify plan. Configure secrets securely and never expose them through VITE_ variables or source control.
@@ -36,6 +38,12 @@ Firebase Authentication must enable Google and authorize `studybuddy-hub.netlify
 
 Verify homepage HTML contains actual public content, canonical/OG metadata and JSON-LD; verify robots.txt, sitemap.xml, icons, responsive navigation and sign-up. `/api/health` must report MongoDB storage; `/api/courses` should return starter courses and `/api/discover` labeled sample challenges. Then test real Google login, administrator access, learner isolation, shared assignments and Cloudinary upload/download/deletion with the real providers.
 
-The public homepage is statically rendered. CMS records publish to query-based public pages with client-updated metadata; extending static generation to those pages is a remaining SEO improvement. No search-ranking or 100% security guarantee is claimed.
+The public homepage is statically rendered. Published CMS records use server-rendered /resources/:slug pages with per-page metadata and a database-backed sitemap. Drafts are excluded. No search-ranking or 100% security guarantee is claimed.
 
 Before real business use, validate backups/restoration, recovery/support procedures, privacy/retention rules, independent security testing and finance/HR requirements. The CRM/ERP modules are operational record management, not certified accounting/payroll.
+
+## Cloudinary image migration
+
+Get the cloud name, API key and API secret from Cloudinary Console → Settings → API Keys. Save them in Netlify environment variables; never use VITE_ variables for the secret. The site-media upload script needs the same server-side variables in its execution environment. It uploads the 13 owned image files, checks public delivery, and writes a public URL manifest. SVG/PDF delivery permissions may require account configuration. Local brand originals remain as fallbacks. The UI uses local assets until the manifest has verified mappings.
+
+Email setup: create a sending API key in Resend → API Keys, verify a domain in Resend → Domains, then set RESEND_API_KEY and MAIL_FROM in Netlify. DNS verification requires access to the sending domain. APP_URL is the site URL. Recovery returns an explicit unavailable message until configured. Redeploy after changing runtime variables.
