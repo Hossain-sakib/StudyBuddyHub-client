@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font definitions only; interface styles use Tailwind utilities. */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/dm-sans-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+}
+
 @layer base {
   body {
     @apply m-0 font-sans text-slate-800 antialiased;

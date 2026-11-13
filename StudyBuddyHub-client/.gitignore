@@ -30,3 +30,6 @@ test-results/
 .netlify/
 
 .ssr/
+
+# Generated from the single bundled catalog source before dev/build.
+src/platform/catalog-summary.json

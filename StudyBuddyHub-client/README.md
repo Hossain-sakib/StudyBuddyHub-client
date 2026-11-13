@@ -25,6 +25,7 @@ Vite proxies `/api` to the backend. Production uses one Netlify origin with `/ap
 ## Code map
 
 - `src/platform/Landing.jsx`: public course discovery, learning paths, sample challenges and FAQs.
+- `src/App.jsx`: public entry point; loads the workspace only for sign-in or an authenticated session.
 - `src/platform/Platform.jsx`: session state and workspace navigation.
 - `src/platform/WorkspaceShell.jsx`: responsive workspace navigation and header.
 - `src/platform/NotificationCenter.jsx`: per-user notification inbox and read controls.
@@ -35,7 +36,7 @@ Vite proxies `/api` to the backend. Production uses one Netlify origin with `/ap
 - `src/platform/SharedAssignments.jsx`: community challenges, submissions and feedback.
 - `src/platform/store.js`: API requests and initial workspace data.
 - `src/platform/googleAuth.js`: lazy-loaded Google authentication SDK.
-- `src/platform/ui.js`: named Tailwind utility recipes, including responsive and interactive states.
+- `src/platform/public-ui.js` and `ui.js`: separate public and workspace Tailwind patterns; four shared patterns live in `style-recipes.js`.
 - `src/styles.css`: Tailwind layers and base utilities; no handwritten component CSS.
 - `scripts/prerender.mjs`: static homepage rendering and SEO metadata.
 - `scripts/prepare-netlify.mjs`: explicit, credential-free deployment artifact assembly from both repositories.
@@ -86,3 +87,11 @@ Gmail can send account emails without a custom domain. Backend SMTP_HOST, SMTP_P
 The document owns workspace page scrolling. Do not put overflow-y-auto plus overscroll-contain on the unconstrained main content area: that traps wheel input even when the element has no internal scroll range. The fixed sidebar, bounded dialogs and message lists retain their own scrolling. Workspace and admin-module navigation starts at the top; anchor scrolling is smooth with reduced-motion support.
 
 The scroll regression checks wheel input, Home/End keys, mobile touch swipes, short-screen sidebar access, dialogs/dropdowns and learner/admin pages across representative viewports.
+
+## Performance and technical SEO
+
+The public entry loads a generated course summary and defers workspace code and full lesson data. sync-catalog.mjs regenerates summaries before development/build. Concurrent identical public catalog/content GET requests share one in-flight request; results are not retained as a stale data cache. Fifteen obsolete style recipes were removed. Deployment rules are readable in config/netlify.toml. Existing font families are self-hosted as two WOFF2 variable-font files with their open-source licenses. UI styling remains Tailwind; @font-face only registers the font assets.
+
+The production entry decreased from 353.25 KB (98.78 KB gzip) to approximately 217 KB (65 KB gzip), and CSS from 140.64 KB to approximately 119 KB. These are Vite build sizes, not a measured Core Web Vitals score. Authenticated users load the workspace chunk when needed. Hashed assets use immutable browser caching.
+
+Public course titles link to /courses/:id. Courses and published articles render complete HTML without JavaScript, with per-page canonical URLs, social metadata and escaped structured data. The sitemap includes published articles and courses with valid modification dates. Legacy article query URLs redirect to their canonical paths. JSON API responses are marked noindex. This improves crawlability and technical SEO; ranking and indexing are controlled by search engines.

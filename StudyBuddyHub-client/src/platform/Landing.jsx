@@ -4,7 +4,7 @@ import PublicFooter from "./PublicFooter";
 import PublicHeader from "./PublicHeader";
 import CourseArtwork from "./CourseArtwork";
 import PublicPage from "./PublicPage";
-import { ui } from "./ui";
+import { ui } from "./public-ui";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
@@ -69,7 +69,7 @@ export default function Landing({ onAuth }) {
           if (active) setContentPage(value);
         })
         .catch(() => {});
-    api("/courses")
+    api("/catalog")
       .then((value) => {
         if (active && Array.isArray(value) && value.length) setCatalog(value);
       })
@@ -260,7 +260,12 @@ export default function Landing({ onAuth }) {
                         )}
                       </div>
                       <h3 className="mt-3 font-heading text-[17px] font-bold leading-7 tracking-tight text-slate-700 dark:text-slate-200">
-                        {c.title}
+                        <a
+                          href={`/courses/${encodeURIComponent(c.id)}`}
+                          className="transition hover:text-violet-600 dark:hover:text-violet-300"
+                        >
+                          {c.title}
+                        </a>
                       </h3>
                       <p className="mt-3 min-h-[72px] text-xs leading-6 text-slate-400">
                         {c.description}

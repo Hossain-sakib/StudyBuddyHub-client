@@ -56,4 +56,6 @@ SMTP uses authenticated TLS (465) or required STARTTLS (587); certificate verifi
 
 ## Portfolio embedding
 
-The generated deployment uses Content-Security-Policy: frame-ancestors 'self' https://sakib-studio.netlify.app; to permit the owner's portfolio preview. X-Frame-Options: DENY is removed because it conflicts with cross-origin framing. Other external origins remain blocked. A portfolio origin change must be reflected in scripts/prepare-netlify.mjs and redeployed. This header is enforced by the embedded Studybuddy site; the portfolio cannot override a restrictive child-site header.
+The generated deployment uses Content-Security-Policy: frame-ancestors 'self' https://sakib-studio.netlify.app; to permit the owner's portfolio preview. X-Frame-Options: DENY is removed because it conflicts with cross-origin framing. Other external origins remain blocked. A portfolio origin change must be reflected in config/netlify.toml and redeployed. This header is enforced by the embedded Studybuddy site; the portfolio cannot override a restrictive child-site header.
+
+The deployment config template is config/netlify.toml. It includes server-rendered /courses/* and /resources/* routes, the dynamic sitemap, permanent legacy article redirects, immutable caching for hashed /assets/* files, and weekly caching for self-hosted fonts.

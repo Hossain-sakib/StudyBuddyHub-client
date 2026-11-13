@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir .ssr && node scripts/prerender.mjs",
+    "build": "node scripts/sync-catalog.mjs && vite build && vite build --ssr src/entry-server.jsx --outDir .ssr && node scripts/prerender.mjs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "playwright test",
     "prepare:netlify": "npm run build && node scripts/prepare-netlify.mjs",
     "format": "prettier --write src scripts tests *.js *.cjs *.html",
     "media:upload": "node scripts/upload-cloudinary.mjs",
-    "media:check": "node scripts/upload-cloudinary.mjs --dry-run"
+    "media:check": "node scripts/upload-cloudinary.mjs --dry-run",
+    "predev": "node scripts/sync-catalog.mjs"
   },
   "dependencies": {
     "@firebase/app": "^0.16.5",

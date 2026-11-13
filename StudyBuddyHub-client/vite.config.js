@@ -4,11 +4,14 @@ export default defineConfig({
   plugins: [react()],
   ssr: { noExternal: ["react-icons"] },
   server: {
-    proxy: {
-      "/api": {
-        target: process.env.API_PROXY_TARGET || "http://127.0.0.1:5000",
-        changeOrigin: true,
-      },
-    },
+    proxy: Object.fromEntries(
+      ["/api", "/courses/", "/resources/", "/sitemap.xml"].map((prefix) => [
+        prefix,
+        {
+          target: process.env.API_PROXY_TARGET || "http://127.0.0.1:5000",
+          changeOrigin: true,
+        },
+      ]),
+    ),
   },
 });

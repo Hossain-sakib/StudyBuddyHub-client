@@ -37,7 +37,7 @@ const graph = {
 };
 html = html.replace(
   "</head>",
-  `<link rel="canonical" href="${origin}/" />\n<meta property="og:type" content="website" />\n<meta property="og:title" content="Studybuddy — Learn, practice, and grow together" />\n<meta property="og:description" content="Explore beginner-friendly courses, practice challenges, and a learning community." />\n<meta property="og:url" content="${origin}/" />\n<meta property="og:image" content="${origin}/brand/social-card.png" />\n<meta name="twitter:card" content="summary_large_image" />\n<script type="application/ld+json">${JSON.stringify(graph).replace(/</g, "\\u003c")}</script>\n</head>`,
+  `<link rel="canonical" href="${origin}/" />\n<meta property="og:type" content="website" />\n<meta property="og:title" content="Studybuddy — Learn, practice, and grow together" />\n<meta property="og:description" content="Explore beginner-friendly courses, practice challenges, and a learning community." />\n<meta property="og:url" content="${origin}/" />\n<meta property="og:image" content="${origin}/brand/social-card.png" />\n<meta name="twitter:card" content="summary_large_image" />\n<meta name="twitter:title" content="Studybuddy — Learn, practice, and grow together" />\n<meta name="twitter:description" content="Explore beginner-friendly courses, practice challenges, and a learning community." />\n<meta name="twitter:image" content="${origin}/brand/social-card.png" />\n<meta property="og:image:alt" content="Studybuddy — Learn, practice, and grow together" />\n<meta name="robots" content="index,follow,max-image-preview:large" />\n<script type="application/ld+json">${JSON.stringify(graph).replace(/</g, "\\u003c")}</script>\n</head>`,
 );
 const media = JSON.parse(
   await readFile(

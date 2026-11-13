@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+import starterCourses from "./catalog.json";
 import AccountAction from "./AccountAction";
 import { FiBookmark } from "react-icons/fi";
 import CourseArtwork from "./CourseArtwork";
@@ -35,7 +37,7 @@ import {
 import { googleIdentity, googleError } from "./googleAuth";
 import Landing from "./Landing";
 import SharedAssignments from "./SharedAssignments";
-import { api, courses as starterCourses, createWorkspace } from "./store";
+import { api, createWorkspace } from "./store";
 const nav = [
   ["dashboard", FiGrid, "Overview"],
   ["courses", FiBookOpen, "My learning"],
@@ -62,7 +64,11 @@ function readPage() {
     ? page
     : "dashboard";
 }
-export default function Platform() {
+export default function Platform({
+  initialSession = null,
+  initialAuthMode = null,
+}) {
+  const bootstrap = useRef(initialSession).current;
   const [accountAction, setAccountAction] = useState(null);
   useEffect(() => {
     function readAction() {
@@ -84,16 +90,18 @@ export default function Platform() {
   }, []);
   const [courses, setCourses] = useState(starterCourses);
   const [page, setPage] = useState(readPage);
-  const [state, setState] = useState(createWorkspace);
-  const [user, setUser] = useState(null);
-  const [booting, setBooting] = useState(true);
+  const [state, setState] = useState(
+    () => bootstrap?.state || createWorkspace(),
+  );
+  const [user, setUser] = useState(bootstrap?.user || null);
+  const [booting, setBooting] = useState(!bootstrap);
   const [search, setSearch] = useState("");
   const [assignmentMode, setAssignmentMode] = useState("personal");
   const [filter, setFilter] = useState("All topics");
-  const [modal, setModal] = useState(null);
+  const [modal, setModal] = useState(initialAuthMode ? { type: "auth" } : null);
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
-  const [authMode, setAuthMode] = useState("login");
+  const [authMode, setAuthMode] = useState(initialAuthMode || "login");
   const [room, setRoom] = useState("general");
   const [messages, setMessages] = useState([]);
   const [chatError, setChatError] = useState("");
@@ -145,6 +153,7 @@ export default function Platform() {
     return () => window.removeEventListener("hashchange", handle);
   }, []);
   useEffect(() => {
+    if (bootstrap) return;
     let active = true;
     const version = session.current;
     api("/session")
@@ -161,7 +170,7 @@ export default function Platform() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [bootstrap]);
   useEffect(() => {
     if (!focusing) return;
     const deadline = Date.now() + focusRemaining.current * 1000;
@@ -847,3 +856,8 @@ export default function Platform() {
     </div>
   );
 }
+
+Platform.propTypes = {
+  initialSession: PropTypes.object,
+  initialAuthMode: PropTypes.oneOf(["login", "register"]),
+};

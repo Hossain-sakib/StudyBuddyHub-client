@@ -175,6 +175,9 @@ test("short mobile sidebar scrolls to profile settings and closing it restores p
     .poll(() => sidebar.evaluate((el) => el.scrollTop))
     .toBeGreaterThan(0);
   await page.getByRole("button", { name: "Close navigation menu" }).click();
+  await expect
+    .poll(() => sidebar.evaluate((el) => getComputedStyle(el).pointerEvents))
+    .toBe("none");
   await page.mouse.move(220, 230);
   await page.mouse.wheel(0, 450);
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);

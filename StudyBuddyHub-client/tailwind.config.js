@@ -4,7 +4,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,jsx}",
-    "../../StudyBuddyHub-server/cms.js",
+    "../../StudyBuddyHub-server/public-{routes,pages}.js",
   ],
   theme: {
     extend: {
