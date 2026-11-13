@@ -59,7 +59,7 @@ export default function WorkspaceShell({ user, page, onNavigate, children }) {
       )}
       <aside
         aria-label="Workspace sidebar"
-        className={`fixed inset-y-0 left-0 z-50 flex w-[252px] flex-col border-r border-slate-200/70 bg-white overflow-y-auto overscroll-contain px-5 py-6 transition-transform duration-200 motion-reduce:transition-none lg:translate-x-0  dark:border-slate-700/70 dark:bg-slate-900 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-[252px] flex-col border-r border-slate-200/70 bg-white overflow-y-auto overscroll-contain [&>*]:shrink-0 px-5 py-6 transition-transform duration-200 motion-reduce:transition-none lg:translate-x-0  dark:border-slate-700/70 dark:bg-slate-900 ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="mb-8 flex items-center justify-between">
           <a
@@ -210,7 +210,7 @@ export default function WorkspaceShell({ user, page, onNavigate, children }) {
         </header>
         <main
           id="main-content"
-          className="mx-auto max-w-[1440px] overflow-y-auto overscroll-contain px-5 py-6 sm:px-8 sm:py-9 xl:px-10"
+          className="mx-auto min-w-0 max-w-[1440px] scroll-mt-24 px-5 py-6 sm:px-8 sm:py-9 xl:px-10"
         >
           {children}
         </main>

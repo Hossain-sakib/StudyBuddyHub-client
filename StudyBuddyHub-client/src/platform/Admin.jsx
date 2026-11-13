@@ -31,6 +31,7 @@ export default function Admin({ user }) {
     setQuery("");
     setStatusFilter("All statuses");
     setPageNumber(1);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [module]);
   useEffect(() => {
     setPageNumber(1);

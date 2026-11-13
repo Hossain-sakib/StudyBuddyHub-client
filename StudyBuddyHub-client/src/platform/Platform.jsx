@@ -134,7 +134,13 @@ export default function Platform() {
     };
   }, [user]);
   useEffect(() => {
-    const handle = () => setPage(readPage());
+    // Each workspace route starts at its heading, independent of the previous page.
+    if (user?.id) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [page, user?.id]);
+  useEffect(() => {
+    const handle = () => {
+      if (window.location.hash !== "#main-content") setPage(readPage());
+    };
     window.addEventListener("hashchange", handle);
     return () => window.removeEventListener("hashchange", handle);
   }, []);

@@ -80,3 +80,9 @@ Password recovery and email verification are available through the account UI on
 Run npm run media:check to list the 13 owned image files. npm run media:upload uploads them to Cloudinary using server-side credentials, verifies public delivery and saves src/platform/media-assets.json after each successful upload. Content-based public IDs make retries safe. BrandImage uses those mappings and falls back to owned local originals. Rebuild and deploy after uploading. The script does not upload inline decorative React icons or arbitrary user data.
 
 Gmail can send account emails without a custom domain. Backend SMTP_HOST, SMTP_PORT, SMTP_USER and SMTP_PASS use a Google app password with TLS. See NETLIFY.md for secure setup. The sender credentials stay on the backend.
+
+## Workspace scrolling
+
+The document owns workspace page scrolling. Do not put overflow-y-auto plus overscroll-contain on the unconstrained main content area: that traps wheel input even when the element has no internal scroll range. The fixed sidebar, bounded dialogs and message lists retain their own scrolling. Workspace and admin-module navigation starts at the top; anchor scrolling is smooth with reduced-motion support.
+
+The scroll regression checks wheel input, Home/End keys, mobile touch swipes, short-screen sidebar access, dialogs/dropdowns and learner/admin pages across representative viewports.
